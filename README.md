@@ -1,6 +1,6 @@
 # store-management-system
 
-this is an android app that make managing stores inventory easier
+this is an android app that make managing stores inventory easier.
 
 ## system features
 
