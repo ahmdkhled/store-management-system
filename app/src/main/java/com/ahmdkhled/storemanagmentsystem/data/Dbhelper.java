@@ -34,6 +34,7 @@ public class Dbhelper extends SQLiteOpenHelper {
                  ProductsContract.PRODUCTID+" INTEGER," +
                 ProductsContract.QUANTITY+" INTEGER )";
 
+
         sqLiteDatabase.execSQL(CREATE_ITEMS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ORDERS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ORDER_ITEMS_TABLE);
