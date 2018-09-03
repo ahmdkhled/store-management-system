@@ -1,4 +1,4 @@
-package com.ahmdkhled.storemanagmentsystem;
+package com.ahmdkhled.storemanagmentsystem.ui;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -7,37 +7,41 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
-import android.widget.TextView;
 
+import com.ahmdkhled.storemanagmentsystem.R;
+import com.ahmdkhled.storemanagmentsystem.barcode.BarcodeTracker;
+import com.ahmdkhled.storemanagmentsystem.barcode.TrackFactory;
 import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
-public class CaptureActivity extends AppCompatActivity {
+public class CaptureActivity extends AppCompatActivity implements BarcodeTracker.BarcodeDetectorListener {
+
 
     CameraSource cameraSource;
     SurfaceView surfaceView;
     Button done;
     MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
 
 
-
         surfaceView = findViewById(R.id.surface_view);
         done = findViewById(R.id.done);
 
-        mediaPlayer= MediaPlayer.create(this,R.raw.beep);
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.beep);
+
+        TrackFactory trackFactory = new TrackFactory(this);
         BarcodeDetector barcodeDetector = new
                 BarcodeDetector.Builder(this).build();
 
@@ -45,6 +49,9 @@ public class CaptureActivity extends AppCompatActivity {
                 .setRequestedPreviewSize(1600, 1024)
                 .setAutoFocusEnabled(true)
                 .build();
+
+
+        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(trackFactory).build());
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -72,21 +79,30 @@ public class CaptureActivity extends AppCompatActivity {
         });
 
 
-        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
-            @Override
-            public void release() {
+    }
 
-            }
 
-            @Override
-            public void receiveDetections(Detector.Detections<Barcode> detections) {
-                final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-                if (barcodes.size() != 0) {
-                    mediaPlayer.start();
-                    Log.d("BARCODE","res "+barcodes.valueAt(0).displayValue);
-                }
-            }
-        });
+    @Override
+    public void onObjectDetected(Barcode barcode) {
+        mediaPlayer.start();
+        Log.d("BARCODE_RES", barcode.displayValue);
+    }
 
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(cameraSource != null){
+            cameraSource.release();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (cameraSource != null) {
+            cameraSource.stop();
+        }
     }
 }
