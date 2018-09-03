@@ -14,11 +14,17 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CaptureActivity"></activity>
+        <activity android:name=".CaptureActivity" />
+        <activity android:name=".AddProductActivity"/>
+
+        <provider
+            android:authorities="com.ahmdkhled.storemanagmentsystem.ProductsProvider"
+            android:name=".data.ProductsProvider"
+            android:exported="false">
+        </provider>
     </application>
 
 </manifest>

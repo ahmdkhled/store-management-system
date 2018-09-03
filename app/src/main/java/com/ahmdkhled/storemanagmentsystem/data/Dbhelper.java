@@ -15,13 +15,13 @@ public class Dbhelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_ITEMS_TABLE = "CREATE TABLE `items` (" +
-                "`itemId`INTEGER," +
-                "`itemName`TEXT NOT NULL," +
-                "`itemPrice`REAL NOT NULL," +
-                "`itemDescription`TEXT DEFAULT 'No description available yet'," +
-                "`otemQuantity`INTEGER," +
-                "PRIMARY KEY(`itemId`)" +
+        String CREATE_ITEMS_TABLE = "CREATE TABLE " +ProductsContract.PRODUCTS + "(" +
+                ProductsContract.PRODUCT_ID+" INTEGER," +
+                ProductsContract.NAME+" TEXT NOT NULL," +
+                ProductsContract.PRICE+" REAL NOT NULL," +
+                ProductsContract.DESCRIPTION+" TEXT DEFAULT 'No description available yet'," +
+                ProductsContract.QUANTITY+" INTEGER," +
+                "PRIMARY KEY("+ProductsContract.PRODUCT_ID+")" +
                 ");";
 
         String CREATE_ORDERS_TABLE = "CREATE TABLE `orders` ( `oriderId` INTEGER, `orderDate` TEXT DEFAULT 'getDate()', PRIMARY KEY(`oriderId`) )";
