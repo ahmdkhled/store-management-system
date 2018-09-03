@@ -24,7 +24,7 @@ public class Dbhelper extends SQLiteOpenHelper {
                 "PRIMARY KEY("+ProductsContract.PRODUCT_ID+")" +
                 ");";
 
-        String CREATE_ORDERS_TABLE = "CREATE TABLE `orders` ( `oriderId` INTEGER, `orderDate` TEXT DEFAULT 'getDate()', PRIMARY KEY(`oriderId`) )";
+        String CREATE_ORDERS_TABLE = "CREATE TABLE `orders` ( `oriderId` INTEGER, `orderDate` TEXT DEFAULT current_date, PRIMARY KEY(`oriderId`) )";
         String CREATE_ORDER_ITEMS_TABLE ="CREATE TABLE orderItem ( `orderId` INTEGER, `itemId` INTEGER, `quantity` INTEGER )";
 
         sqLiteDatabase.execSQL(CREATE_ITEMS_TABLE);
