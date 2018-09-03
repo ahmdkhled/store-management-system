@@ -8,7 +8,7 @@
     android:paddingStart="5dp"
     android:paddingEnd="5dp"
     android:background="#fafafa"
-    tools:context=".activities.AddProductActivity">
+    tools:context=".ui.AddProductActivity">
 
     <ImageView
         android:layout_width="100dp"

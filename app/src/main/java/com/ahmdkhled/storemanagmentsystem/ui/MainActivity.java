@@ -1,13 +1,12 @@
-package com.ahmdkhled.storemanagmentsystem.activities;
+package com.ahmdkhled.storemanagmentsystem.ui;
 
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-
 import com.ahmdkhled.storemanagmentsystem.R;
-
+import com.ahmdkhled.storemanagmentsystem.ui.CaptureActivity;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -15,12 +14,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(this,AddProductActivity.class));
+        startActivity(new Intent(this,CaptureActivity.class));
     }
 
-
-
-    }
+}
 
 
 

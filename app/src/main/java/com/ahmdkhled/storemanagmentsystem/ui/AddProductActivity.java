@@ -1,4 +1,4 @@
-package com.ahmdkhled.storemanagmentsystem.activities;
+package com.ahmdkhled.storemanagmentsystem.ui;
 
 import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
