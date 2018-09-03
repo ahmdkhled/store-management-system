@@ -1,6 +1,7 @@
 package com.ahmdkhled.storemanagmentsystem.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -34,13 +35,25 @@ public class ProductsProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
+    public Cursor query(@NonNull Uri uri, @Nullable String[] columns, @Nullable String selections
+            , @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+
+        SQLiteDatabase database=dbhelper.getReadableDatabase();
+        if (uriMatcher.match(uri)==PRODUCTS){
+            Cursor cursor= database.query(ProductsContract.PRODUCTS,columns,
+                    selections,selectionArgs,null,null,null);
+            cursor.setNotificationUri(getContext().getContentResolver(),ProductsContract.productsUri);
+            return cursor;
+        }
         return null;
     }
 
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
+        if (uriMatcher.match(uri)==PRODUCTS){
+            return ProductsContract.PRODUCTS_MIME_TYPE;
+        }
         return null;
     }
 
@@ -48,20 +61,53 @@ public class ProductsProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         SQLiteDatabase database=dbhelper.getWritableDatabase();
+        long id=-10;
         if (uriMatcher.match(uri)==PRODUCTS){
-            long id=database.insert(ProductsContract.PRODUCTS,null,contentValues);
+            id=database.insert(ProductsContract.PRODUCTS,null,contentValues);
             Log.d("INSERT","id "+id);
+        }else if (uriMatcher.match(uri)==ORDERS){
+            id=database.insert(ProductsContract.ORDERS,null,contentValues);
+            Log.d("INSERT","id "+id);
+        }else if (uriMatcher.match(uri)==ORDERS){
+            id=database.insert(ProductsContract.ORDER_ITEMS,null,contentValues);
+            Log.d("INSERT","id "+id);
+        }
+        if (id>0){
+            getContext().getContentResolver().notifyChange(uri, null);
+            return ContentUris.withAppendedId(ProductsContract.productsUri,id);
         }
         return uri;
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
+    public int delete(@NonNull Uri uri, @Nullable String where, @Nullable String[] whereArgs) {
+        SQLiteDatabase database=dbhelper.getWritableDatabase();
+        if (uriMatcher.match(uri)==PRODUCTS){
+            getContext().getContentResolver().notifyChange(uri,null);
+            return database.delete(ProductsContract.PRODUCTS,where,whereArgs);
+        }else if (uriMatcher.match(uri)==ORDERS){
+            getContext().getContentResolver().notifyChange(uri,null);
+           return database.delete(ProductsContract.ORDERS,where,whereArgs);
+        }else if (uriMatcher.match(uri)==ORDER_ITEMS){
+            getContext().getContentResolver().notifyChange(uri,null);
+            return database.delete(ProductsContract.ORDER_ITEMS,where,whereArgs);
+        }
         return 0;
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String where, @Nullable String[] whereArgs) {
+        SQLiteDatabase database=dbhelper.getWritableDatabase();
+        if (uriMatcher.match(uri)==PRODUCTS){
+            getContext().getContentResolver().notifyChange(uri,null);
+            return database.delete(ProductsContract.PRODUCTS,where,whereArgs);
+        }else if (uriMatcher.match(uri)==ORDERS){
+            getContext().getContentResolver().notifyChange(uri,null);
+            return database.delete(ProductsContract.ORDERS,where,whereArgs);
+        }else if (uriMatcher.match(uri)==ORDER_ITEMS){
+            getContext().getContentResolver().notifyChange(uri,null);
+            return database.delete(ProductsContract.ORDER_ITEMS,where,whereArgs);
+        }
         return 0;
     }
 }

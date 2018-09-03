@@ -41,6 +41,7 @@ public class AddProductActivity extends AppCompatActivity {
                     int Quantity=Integer.valueOf(quantity.getText().toString());
                     String Desc=desc.getText().toString();
                     addProduct(id,Name,Price,Quantity,Desc);
+                    clearFields();
                 }else {
                     Toast.makeText(getApplicationContext(),"please complete all required fields"
                             ,Toast.LENGTH_SHORT).show();
@@ -61,9 +62,9 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     boolean validateInput(){
-        return !(TextUtils.isEmpty(name.getText().toString())
-                &&TextUtils.isEmpty(price.getText().toString())
-                &&TextUtils.isEmpty(quantity.getText().toString()));
+        return (!TextUtils.isEmpty(name.getText().toString())
+                &&!TextUtils.isEmpty(price.getText().toString())
+                &&!TextUtils.isEmpty(quantity.getText().toString()));
 
     }
     void clearFields(){
