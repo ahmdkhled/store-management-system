@@ -11,20 +11,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CaptureActivity" />
-        <activity android:name=".AddProductActivity"/>
+        <activity android:name=".activities.CaptureActivity" />
+        <activity android:name=".activities.AddProductActivity" />
 
         <provider
-            android:authorities="com.ahmdkhled.storemanagmentsystem.ProductsProvider"
             android:name=".data.ProductsProvider"
-            android:exported="false">
-        </provider>
+            android:authorities="com.ahmdkhled.storemanagmentsystem.ProductsProvider"
+            android:exported="false"></provider>
+
+        <activity android:name=".activities.OrderActivity"></activity>
     </application>
 
 </manifest>

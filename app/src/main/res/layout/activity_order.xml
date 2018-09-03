@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="5dp"
+    android:background="#dedede"
+    tools:context=".activities.OrderActivity">
+
+    <TextView
+        android:id="@+id/orderItemName_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Item Name"
+        android:textSize="20sp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/orderItemQuantity_label"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_weight="4"/>
+
+
+    <TextView
+        android:id="@+id/orderItemQuantity_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Q"
+        android:textSize="20sp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/orderItemPrice_label"
+        app:layout_constraintStart_toEndOf="@+id/orderItemName_label"
+        app:layout_constraintHorizontal_weight="1"/>
+
+    <TextView
+        android:id="@+id/orderItemPrice_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textSize="20sp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/orderItemName"
+        app:layout_constraintStart_toEndOf="@+id/orderItemQuantity_label"
+        app:layout_constraintHorizontal_weight="2"/>
+
+    <TextView
+        android:id="@+id/orderItemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Total"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/orderItemPrice_label"
+        app:layout_constraintHorizontal_weight="2"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/orderItemsRecycler"
+        app:layout_constraintTop_toBottomOf="@+id/orderItemQuantity_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#fff"
+        />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.ahmdkhled.storemanagmentsystem;
+package com.ahmdkhled.storemanagmentsystem.activities;
 
 import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsProvider;
 

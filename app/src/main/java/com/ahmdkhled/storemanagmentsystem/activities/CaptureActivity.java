@@ -1,4 +1,4 @@
-package com.ahmdkhled.storemanagmentsystem;
+package com.ahmdkhled.storemanagmentsystem.activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ahmdkhled.storemanagmentsystem.R;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
