@@ -18,6 +18,7 @@ import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 public class AddProductActivity extends AppCompatActivity {
 
     private static final String TAG = AddProductActivity.class.getSimpleName();
