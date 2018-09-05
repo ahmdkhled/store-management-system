@@ -15,16 +15,19 @@ public class ProductsProvider extends ContentProvider {
 
     static UriMatcher uriMatcher;
     Dbhelper dbhelper;
-    public static final int PRODUCTS=1;
-    public static final int ORDERS=1;
-    public static final int ORDER_ITEMS=1;
-
+    public static final int PRODUCTS=101;
+    public static final int ORDERS=201;
+    public static final int ORDER_ITEMS=301;
+    private static final int PRODUCT_WITH_ID =102 ;
 
     static {
         uriMatcher=new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(ProductsContract.AUTHORITY,ProductsContract.PRODUCTS_PATH,PRODUCTS);
+        uriMatcher.addURI(ProductsContract.AUTHORITY,ProductsContract.PRODUCTS_PATH+"/#",PRODUCT_WITH_ID);
         uriMatcher.addURI(ProductsContract.AUTHORITY,ProductsContract.ORDERS_PATH,ORDERS);
+//        matcher.addURI(ProductsContract.AUTHORITY,ProductsContract.ORDERS_PATH+"/#",TASK_WITH_ID);
         uriMatcher.addURI(ProductsContract.AUTHORITY,ProductsContract.ORDERITEMS_PATH,ORDER_ITEMS);
+//        matcher.addURI(ProductsContract.AUTHORITYProductsContract.ORDERITEMS_PATH+"/#",TASK_WITH_ID);
     }
 
     @Override
@@ -39,12 +42,24 @@ public class ProductsProvider extends ContentProvider {
             , @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
         SQLiteDatabase database=dbhelper.getReadableDatabase();
-        if (uriMatcher.match(uri)==PRODUCTS){
-            Cursor cursor= database.query(ProductsContract.PRODUCTS,columns,
+        Cursor cursor;
+        int match = uriMatcher.match(uri);
+        if (match==PRODUCTS){
+            cursor= database.query(ProductsContract.PRODUCTS,columns,
                     selections,selectionArgs,null,null,null);
             cursor.setNotificationUri(getContext().getContentResolver(),ProductsContract.productsUri);
             return cursor;
         }
+        else if(match==PRODUCT_WITH_ID){
+            String id = uri.getPathSegments().get(1);
+            String mSelection = ProductsContract.PRODUCT_ID+"=?";
+            String[]mArgs = new String[]{id};
+            cursor = database.query(ProductsContract.PRODUCTS,columns,mSelection,mArgs,null,null,sortOrder);
+            cursor.setNotificationUri(getContext().getContentResolver(),ProductsContract.productsUri);
+            return cursor;
+        }
+
+
         return null;
     }
 

@@ -1,0 +1,107 @@
+package com.ahmdkhled.storemanagmentsystem.ui;
+
+
+import android.app.ProgressDialog;
+import android.content.ContentUris;
+import android.content.Intent;
+
+import android.database.Cursor;
+import android.net.Uri;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.ahmdkhled.storemanagmentsystem.R;
+import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class ProductDetail extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+
+    private static final String TAG = ProductDetail.class.getSimpleName();
+
+    @BindView(R.id.barcode_value)
+    TextView mBarcodeValueTxt;
+    @BindView(R.id.product_name_add)
+    EditText mProductNameTxt;
+    @BindView(R.id.product_price_add)
+    EditText mProductPriceTxt;
+    @BindView(R.id.product_desc_add)
+    EditText mProductDescTxt;
+    @BindView(R.id.product_quantity_add)
+    EditText mProductQuantityTxt;
+    @BindView(R.id.btn)
+    Button mUpdateBtn;
+
+    private ProgressDialog mProgressDialog;
+
+    private String barcodeValue;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_product);
+        // bind views
+        ButterKnife.bind(this);
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle("waiting...");
+        mProgressDialog.show();
+
+        // get barcode value from intent
+        Intent intent = getIntent();
+        if(intent != null && intent.getStringExtra("detail_extra") != null){
+            barcodeValue = intent.getStringExtra("detail_extra");
+            Log.d(TAG,"barcode value is "+barcodeValue);
+            getSupportLoaderManager().initLoader(1,null,this);
+        }else Log.d(TAG,"barcode value is null");
+
+
+
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        Uri uri = ContentUris.withAppendedId(ProductsContract.productsUri, Long.parseLong(barcodeValue));
+        return new CursorLoader(this, uri,null,null,null,null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mProgressDialog.dismiss();
+        updateViews(cursor);
+
+    }
+
+    private void updateViews(Cursor cursor) {
+        if(cursor.getCount() != 0){
+            String name = cursor.getString(cursor.getColumnIndex(ProductsContract.NAME));
+            String price = cursor.getString(cursor.getColumnIndex(ProductsContract.PRICE));
+            String desc = cursor.getString(cursor.getColumnIndex(ProductsContract.DESCRIPTION));
+            String id = cursor.getString(cursor.getColumnIndex(ProductsContract.PRODUCT_ID));
+
+            Log.d(TAG,"name is "+name);
+            Log.d(TAG,"price is "+price);
+            Log.d(TAG,"desc is "+desc);
+
+            mBarcodeValueTxt.setText(id);
+            mProductNameTxt.setText(name);
+            mProductPriceTxt.setText(price);
+            mProductDescTxt.setText(desc);
+
+        }else Log.d(TAG,"cursor is null");
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+}

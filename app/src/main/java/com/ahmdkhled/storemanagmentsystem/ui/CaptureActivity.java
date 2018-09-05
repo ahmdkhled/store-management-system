@@ -1,14 +1,18 @@
 package com.ahmdkhled.storemanagmentsystem.ui;
 
 import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Button;
 
 import com.ahmdkhled.storemanagmentsystem.R;
@@ -21,6 +25,9 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class CaptureActivity extends AppCompatActivity implements BarcodeTracker.BarcodeDetectorListener {
 
 
@@ -29,11 +36,16 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
     Button done;
     MediaPlayer mediaPlayer;
 
+    @BindView(R.id.done)
+    Button doneBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
 
+        ButterKnife.bind(this);
+        doneBtn.setEnabled(false);
 
         surfaceView = findViewById(R.id.surface_view);
         done = findViewById(R.id.done);
@@ -82,10 +94,38 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
     }
 
 
+
+
     @Override
-    public void onObjectDetected(Barcode barcode) {
+    public void onObjectDetected(final Barcode barcode) {
         mediaPlayer.start();
         Log.d("BARCODE_RES", barcode.displayValue);
+        doneBtn.setEnabled(true);
+        doneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
+                String[]options = {"Add New Product","View Product Details"};
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(i == 0){
+                            // add new product
+                            Intent addIntent = new Intent(CaptureActivity.this,AddProductActivity.class);
+                            addIntent.putExtra("add_extra",barcode.displayValue);
+                            startActivity(addIntent);
+                        }else if(i == 1){
+                            // view product details
+                            Intent addIntent = new Intent(CaptureActivity.this,ProductDetail.class);
+                            addIntent.putExtra("detail_extra",barcode.displayValue);
+                            startActivity(addIntent);
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+
     }
 
 
@@ -105,4 +145,6 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
             cameraSource.stop();
         }
     }
+
+
 }

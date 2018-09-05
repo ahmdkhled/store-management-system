@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
-import com.ahmdkhled.storemanagmentsystem.data.ProductsProvider;
 
 public class AddProductActivity extends AppCompatActivity {
 
@@ -29,7 +28,7 @@ public class AddProductActivity extends AppCompatActivity {
         quantity=findViewById(R.id.product_quantity_add);
         desc=findViewById(R.id.product_desc_add);
         id=findViewById(R.id.barcode_value);
-        addProduct=findViewById(R.id.addProduct);
+        addProduct=findViewById(R.id.btn);
 
 
         addProduct.setOnClickListener(new View.OnClickListener() {
@@ -74,4 +73,6 @@ public class AddProductActivity extends AppCompatActivity {
         quantity.setText("0");
         desc.setText("");
     }
+
+
 }

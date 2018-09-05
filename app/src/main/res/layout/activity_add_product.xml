@@ -136,7 +136,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/addProduct"
+        android:id="@+id/btn"
         android:text="add product"
         android:textAllCaps="false"
         android:background="@color/colorPrimary"

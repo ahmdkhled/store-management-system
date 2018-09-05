@@ -11,7 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,17 +18,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.AddProductActivity" />
         <activity android:name=".ui.CaptureActivity" />
 
         <provider
             android:name=".data.ProductsProvider"
             android:authorities="com.ahmdkhled.storemanagmentsystem.ProductsProvider"
-            android:exported="false">
-        </provider>
+            android:exported="false"></provider>
 
-        <activity android:name=".ui.OrderActivity"/>
+        <activity android:name=".ui.OrderActivity" />
+        <activity android:name=".ui.ProductDetail"></activity>
     </application>
 
 </manifest>
