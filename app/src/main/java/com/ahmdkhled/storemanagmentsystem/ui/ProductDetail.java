@@ -3,6 +3,7 @@ package com.ahmdkhled.storemanagmentsystem.ui;
 
 import android.app.ProgressDialog;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 
 import android.database.Cursor;
@@ -13,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -56,6 +58,8 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
         mProgressDialog.setTitle("waiting...");
         mProgressDialog.show();
 
+
+
         // get barcode value from intent
         Intent intent = getIntent();
         if(intent != null && intent.getStringExtra("detail_extra") != null){
@@ -65,8 +69,12 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
         }else Log.d(TAG,"barcode value is null");
 
 
+        mUpdateBtn.setText(R.string.update_btn);
+        mUpdateBtn.setEnabled(false);
 
     }
+
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -79,14 +87,17 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
         mProgressDialog.dismiss();
         updateViews(cursor);
 
+
     }
 
     private void updateViews(Cursor cursor) {
         if(cursor.getCount() != 0){
-            String name = cursor.getString(cursor.getColumnIndex(ProductsContract.NAME));
-            String price = cursor.getString(cursor.getColumnIndex(ProductsContract.PRICE));
-            String desc = cursor.getString(cursor.getColumnIndex(ProductsContract.DESCRIPTION));
-            String id = cursor.getString(cursor.getColumnIndex(ProductsContract.PRODUCT_ID));
+            cursor.moveToFirst();
+            final String name = cursor.getString(cursor.getColumnIndex(ProductsContract.NAME));
+            final String price = cursor.getString(cursor.getColumnIndex(ProductsContract.PRICE));
+            final String desc = cursor.getString(cursor.getColumnIndex(ProductsContract.DESCRIPTION));
+            final String id = cursor.getString(cursor.getColumnIndex(ProductsContract.PRODUCT_ID));
+            final String quantity = cursor.getString(cursor.getColumnIndex(ProductsContract.QUANTITY));
 
             Log.d(TAG,"name is "+name);
             Log.d(TAG,"price is "+price);
@@ -96,6 +107,22 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
             mProductNameTxt.setText(name);
             mProductPriceTxt.setText(price);
             mProductDescTxt.setText(desc);
+            mProductQuantityTxt.setText(quantity);
+
+            mUpdateBtn.setEnabled(true);
+            mUpdateBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ContentValues contentValues=new ContentValues();
+                    contentValues.put(ProductsContract.PRODUCT_ID,id);
+                    contentValues.put(ProductsContract.NAME,name);
+                    contentValues.put(ProductsContract.PRICE,price);
+                    contentValues.put(ProductsContract.QUANTITY,quantity);
+                    contentValues.put(ProductsContract.DESCRIPTION,desc);
+                    Uri uri = ContentUris.withAppendedId(ProductsContract.productsUri, Long.parseLong(id));
+                    getContentResolver().update(uri,contentValues,null,null);
+                }
+            });
 
         }else Log.d(TAG,"cursor is null");
     }
@@ -104,4 +131,5 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
 }

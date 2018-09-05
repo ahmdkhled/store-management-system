@@ -23,7 +23,7 @@
         android:textSize="20sp"
         android:textColor="#f5f5f5"
         android:textAllCaps="false"
-        android:background="#b71c1c"
+        android:background="#D32F2F"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 

@@ -33,7 +33,6 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
 
     CameraSource cameraSource;
     SurfaceView surfaceView;
-    Button done;
     MediaPlayer mediaPlayer;
 
     @BindView(R.id.done)
@@ -45,10 +44,10 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
         setContentView(R.layout.activity_capture);
 
         ButterKnife.bind(this);
-        doneBtn.setEnabled(false);
+        doneBtn.setClickable(false);
 
         surfaceView = findViewById(R.id.surface_view);
-        done = findViewById(R.id.done);
+
 
 
         mediaPlayer = MediaPlayer.create(this, R.raw.beep);
@@ -100,7 +99,7 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
     public void onObjectDetected(final Barcode barcode) {
         mediaPlayer.start();
         Log.d("BARCODE_RES", barcode.displayValue);
-        doneBtn.setEnabled(true);
+        doneBtn.setClickable(true);
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,9 +115,9 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
                             startActivity(addIntent);
                         }else if(i == 1){
                             // view product details
-                            Intent addIntent = new Intent(CaptureActivity.this,ProductDetail.class);
-                            addIntent.putExtra("detail_extra",barcode.displayValue);
-                            startActivity(addIntent);
+                            Intent detailIntent = new Intent(CaptureActivity.this,ProductDetail.class);
+                            detailIntent.putExtra("detail_extra",barcode.displayValue);
+                            startActivity(detailIntent);
                         }
                     }
                 });

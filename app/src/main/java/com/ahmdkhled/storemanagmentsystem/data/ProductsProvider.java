@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 public class ProductsProvider extends ContentProvider {
 
@@ -89,9 +90,12 @@ public class ProductsProvider extends ContentProvider {
         }
         if (id>0){
             getContext().getContentResolver().notifyChange(uri, null);
+            Toast.makeText(getContext(), "successfully saved", Toast.LENGTH_SHORT).show();
             return ContentUris.withAppendedId(ProductsContract.productsUri,id);
+        }else {
+            Toast.makeText(getContext(), "something went wrong!", Toast.LENGTH_SHORT).show();
+            return uri;
         }
-        return uri;
     }
 
     @Override
@@ -113,16 +117,28 @@ public class ProductsProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String where, @Nullable String[] whereArgs) {
         SQLiteDatabase database=dbhelper.getWritableDatabase();
-        if (uriMatcher.match(uri)==PRODUCTS){
-            getContext().getContentResolver().notifyChange(uri,null);
-            return database.delete(ProductsContract.PRODUCTS,where,whereArgs);
-        }else if (uriMatcher.match(uri)==ORDERS){
-            getContext().getContentResolver().notifyChange(uri,null);
-            return database.delete(ProductsContract.ORDERS,where,whereArgs);
-        }else if (uriMatcher.match(uri)==ORDER_ITEMS){
-            getContext().getContentResolver().notifyChange(uri,null);
-            return database.delete(ProductsContract.ORDER_ITEMS,where,whereArgs);
+        int match = uriMatcher.match(uri);
+        int mId;
+        switch (match){
+            case PRODUCT_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                mId = database.update(ProductsContract.PRODUCTS,contentValues,ProductsContract.PRODUCT_ID+"=?",new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("invalid uri");
         }
-        return 0;
+
+        // if deleted record exist
+        if(mId != 0){
+            getContext().getContentResolver().notifyChange(uri,null);
+            Toast.makeText(getContext(), "successfully updated", Toast.LENGTH_SHORT).show();
+            return mId;
+        }
+        // if record not exist
+        else {
+            Toast.makeText(getContext(), "something went wrong ", Toast.LENGTH_SHORT).show();
+            return 0;
+        }
+
     }
 }

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Dbhelper extends SQLiteOpenHelper {
 
     public static final String DBNAME = "store.db";
-    public static final int DBVERSION = 1;
+    public static final int DBVERSION = 2;
 
     public Dbhelper(Context context) {
         super(context, DBNAME, null, DBVERSION);
@@ -16,7 +16,7 @@ public class Dbhelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_ITEMS_TABLE = "CREATE TABLE " +ProductsContract.PRODUCTS + "(" +
-                ProductsContract.PRODUCT_ID+" INTEGER," +
+                ProductsContract.PRODUCT_ID+" TEXT," +
                 ProductsContract.NAME+" TEXT NOT NULL," +
                 ProductsContract.PRICE+" REAL NOT NULL," +
                 ProductsContract.DESCRIPTION+" TEXT DEFAULT 'No description available yet'," +

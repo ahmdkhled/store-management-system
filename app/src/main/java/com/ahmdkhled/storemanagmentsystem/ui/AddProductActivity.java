@@ -1,9 +1,11 @@
 package com.ahmdkhled.storemanagmentsystem.ui;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,33 +15,58 @@ import android.widget.Toast;
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AddProductActivity extends AppCompatActivity {
 
-    EditText name,price,quantity,desc;
-    TextView id;
-    Button addProduct;
+    private static final String TAG = AddProductActivity.class.getSimpleName();
+
+
+
+    @BindView(R.id.product_name_add)
+    EditText mProductNameTxt;
+    @BindView(R.id.product_price_add)
+    EditText mProductPriceTxt;
+    @BindView(R.id.product_desc_add)
+    EditText mProductDescTxt;
+    @BindView(R.id.product_quantity_add)
+    EditText mProductQuantityTxt;
+    @BindView(R.id.barcode_value)
+    TextView mBarcodeValueTxt;
+    @BindView(R.id.btn)
+    Button mSaveBtn;
+
+    private String barcodeValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
-        name=findViewById(R.id.product_name_add);
-        price=findViewById(R.id.product_price_add);
-        quantity=findViewById(R.id.product_quantity_add);
-        desc=findViewById(R.id.product_desc_add);
-        id=findViewById(R.id.barcode_value);
-        addProduct=findViewById(R.id.btn);
+        ButterKnife.bind(this);
+
+        mSaveBtn.setText(R.string.save_btn);
 
 
-        addProduct.setOnClickListener(new View.OnClickListener() {
+        // get barcode value from intent
+        Intent intent = getIntent();
+        if(intent != null && intent.getStringExtra("add_extra") != null){
+            barcodeValue = intent.getStringExtra("add_extra");
+            mBarcodeValueTxt.setText(barcodeValue);
+            Log.d(TAG,"barcode value is "+barcodeValue);
+        }else Log.d(TAG,"barcode value is null)");
+
+
+        mSaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validateInput()){
-                    int id=0;
-                    String Name=name.getText().toString();
-                    double Price=Double.valueOf(price.getText().toString());
-                    int Quantity=Integer.valueOf(quantity.getText().toString());
-                    String Desc=desc.getText().toString();
+                    String id="6223004542060";
+                    String Name=mProductNameTxt.getText().toString();
+                    double Price=Double.valueOf(mProductPriceTxt.getText().toString());
+                    int Quantity=Integer.valueOf(mProductQuantityTxt.getText().toString());
+                    String Desc=mProductDescTxt.getText().toString();
                     addProduct(id,Name,Price,Quantity,Desc);
                     clearFields();
                 }else {
@@ -51,7 +78,7 @@ public class AddProductActivity extends AppCompatActivity {
 
     }
 
-    void addProduct(int id,String name,Double price,int quantity,String desc){
+    void addProduct(String id,String name,Double price,int quantity,String desc){
         ContentValues contentValues=new ContentValues();
         contentValues.put(ProductsContract.PRODUCT_ID,id);
         contentValues.put(ProductsContract.NAME,name);
@@ -62,16 +89,16 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     boolean validateInput(){
-        return (!TextUtils.isEmpty(name.getText().toString())
-                &&!TextUtils.isEmpty(price.getText().toString())
-                &&!TextUtils.isEmpty(quantity.getText().toString()));
+        return (!TextUtils.isEmpty(mProductNameTxt.getText().toString())
+                &&!TextUtils.isEmpty(mProductPriceTxt.getText().toString())
+                &&!TextUtils.isEmpty(mProductQuantityTxt.getText().toString()));
 
     }
     void clearFields(){
-        name.setText("");
-        price.setText("0");
-        quantity.setText("0");
-        desc.setText("");
+        mProductNameTxt.setText("");
+        mProductPriceTxt.setText("0");
+        mProductQuantityTxt.setText("0");
+        mProductDescTxt.setText("");
     }
 
 
