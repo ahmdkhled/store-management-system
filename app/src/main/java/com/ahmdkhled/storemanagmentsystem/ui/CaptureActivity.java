@@ -23,6 +23,8 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
 import butterknife.BindView;
@@ -34,24 +36,35 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
     CameraSource cameraSource;
     SurfaceView surfaceView;
     MediaPlayer mediaPlayer;
-
     @BindView(R.id.done)
     Button doneBtn;
 
+    String souurce;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
 
         ButterKnife.bind(this);
-        doneBtn.setClickable(false);
 
         surfaceView = findViewById(R.id.surface_view);
 
 
+        if (getIntent()!=null&&getIntent().hasExtra("source")){
+            souurce=getIntent().getStringExtra("source");
+        }
+
+        if (souurce.equals("AddProductActivity")){
+            doneBtn.setVisibility(View.GONE);
+        }
 
         mediaPlayer = MediaPlayer.create(this, R.raw.beep);
+        handleBarcode();
 
+
+    }
+
+    void handleBarcode(){
         TrackFactory trackFactory = new TrackFactory(this);
         BarcodeDetector barcodeDetector = new
                 BarcodeDetector.Builder(this).build();
@@ -68,7 +81,8 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
                 try {
-                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED) {
 
                         return;
                     }
@@ -88,45 +102,19 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
                 cameraSource.stop();
             }
         });
-
-
     }
-
-
-
 
     @Override
     public void onObjectDetected(final Barcode barcode) {
-        mediaPlayer.start();
-        Log.d("BARCODE_RES", barcode.displayValue);
-        doneBtn.setClickable(true);
-        doneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
-                String[]options = {"Add New Product","View Product Details"};
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if(i == 0){
-                            // add new product
-                            Intent addIntent = new Intent(CaptureActivity.this,AddProductActivity.class);
-                            addIntent.putExtra("add_extra",barcode.displayValue);
-                            startActivity(addIntent);
-                        }else if(i == 1){
-                            // view product details
-                            Intent detailIntent = new Intent(CaptureActivity.this,ProductDetail.class);
-                            detailIntent.putExtra("detail_extra",barcode.displayValue);
-                            startActivity(detailIntent);
-                        }
-                    }
-                });
-                builder.show();
-            }
-        });
+        //Log.d("BARCODE_RES", barcode.displayValue);
+        if (souurce.equals("AddProductActivity")){
+            mediaPlayer.start();
+            Log.d("onBarcodeDetected", "value is "+barcode.displayValue);
+            EventBus.getDefault().post(new AddProductActivity.BarcodeDetectedEvent(barcode.displayValue));
+            finish();
+        }
 
     }
-
 
 
     @Override

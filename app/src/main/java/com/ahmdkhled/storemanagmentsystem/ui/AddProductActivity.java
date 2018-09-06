@@ -9,20 +9,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class AddProductActivity extends AppCompatActivity {
 
     private static final String TAG = AddProductActivity.class.getSimpleName();
-
 
 
     @BindView(R.id.product_name_add)
@@ -37,6 +40,8 @@ public class AddProductActivity extends AppCompatActivity {
     TextView mBarcodeValueTxt;
     @BindView(R.id.btn)
     Button mSaveBtn;
+    @BindView(R.id.barcode_logo)
+    ImageView barcode_logo;
 
     private String barcodeValue;
 
@@ -49,53 +54,71 @@ public class AddProductActivity extends AppCompatActivity {
 
         mSaveBtn.setText(R.string.save_btn);
 
+        openCaptureActivity();
 
         // get barcode value from intent
         Intent intent = getIntent();
-        if(intent != null && intent.getStringExtra("add_extra") != null){
+        if (intent != null && intent.getStringExtra("add_extra") != null) {
             barcodeValue = intent.getStringExtra("add_extra");
             mBarcodeValueTxt.setText(barcodeValue);
-            Log.d(TAG,"barcode value is "+barcodeValue);
-        }else Log.d(TAG,"barcode value is null)");
+            Log.d(TAG, "barcode value is " + barcodeValue);
+        } else Log.d(TAG, "barcode value is null)");
 
 
         mSaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validateInput()){
-                    String id="6223004542060";
-                    String Name=mProductNameTxt.getText().toString();
-                    double Price=Double.valueOf(mProductPriceTxt.getText().toString());
-                    int Quantity=Integer.valueOf(mProductQuantityTxt.getText().toString());
-                    String Desc=mProductDescTxt.getText().toString();
-                    addProduct(id,Name,Price,Quantity,Desc);
+                if (validateInput()) {
+                    String id = "6223004542060";
+                    String Name = mProductNameTxt.getText().toString();
+                    double Price = Double.valueOf(mProductPriceTxt.getText().toString());
+                    int Quantity = Integer.valueOf(mProductQuantityTxt.getText().toString());
+                    String Desc = mProductDescTxt.getText().toString();
+                    addProduct(id, Name, Price, Quantity, Desc);
                     clearFields();
-                }else {
-                    Toast.makeText(getApplicationContext(),"please complete all required fields"
-                            ,Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "please complete all required fields"
+                            , Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        barcode_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCaptureActivity();
             }
         });
 
     }
 
-    void addProduct(String id,String name,Double price,int quantity,String desc){
-        ContentValues contentValues=new ContentValues();
-        contentValues.put(ProductsContract.PRODUCT_ID,id);
-        contentValues.put(ProductsContract.NAME,name);
-        contentValues.put(ProductsContract.PRICE,price);
-        contentValues.put(ProductsContract.QUANTITY,quantity);
-        contentValues.put(ProductsContract.DESCRIPTION,desc);
-        getContentResolver().insert(ProductsContract.productsUri,contentValues);
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBarcodeDetected(BarcodeDetectedEvent event) {
+        mBarcodeValueTxt.setText(event.barcodeValue);
+        Log.d("onBarcodeDetected", "onBarcodeDetected :)");
+    };
+
+
+
+    void addProduct(String id, String name, Double price, int quantity, String desc) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ProductsContract.PRODUCT_ID, id);
+        contentValues.put(ProductsContract.NAME, name);
+        contentValues.put(ProductsContract.PRICE, price);
+        contentValues.put(ProductsContract.QUANTITY, quantity);
+        contentValues.put(ProductsContract.DESCRIPTION, desc);
+        getContentResolver().insert(ProductsContract.productsUri, contentValues);
     }
 
-    boolean validateInput(){
+    boolean validateInput() {
         return (!TextUtils.isEmpty(mProductNameTxt.getText().toString())
-                &&!TextUtils.isEmpty(mProductPriceTxt.getText().toString())
-                &&!TextUtils.isEmpty(mProductQuantityTxt.getText().toString()));
+                && !TextUtils.isEmpty(mProductPriceTxt.getText().toString())
+                && !TextUtils.isEmpty(mProductQuantityTxt.getText().toString()));
 
     }
-    void clearFields(){
+
+    void clearFields() {
         mProductNameTxt.setText("");
         mProductPriceTxt.setText("0");
         mProductQuantityTxt.setText("0");
@@ -103,4 +126,36 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+
+    void openCaptureActivity(){
+        Intent capureIntent=new Intent(this,CaptureActivity.class);
+        capureIntent.putExtra("source","AddProductActivity");
+        startActivity(capureIntent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
+    }
+
+    public static class BarcodeDetectedEvent {
+        String barcodeValue ;
+        public BarcodeDetectedEvent(String barcodeValue) {
+            this.barcodeValue=barcodeValue;
+        }
+    }
+
 }
+
+
+
