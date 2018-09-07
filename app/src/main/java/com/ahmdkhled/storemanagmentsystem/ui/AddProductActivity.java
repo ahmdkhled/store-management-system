@@ -43,6 +43,8 @@ public class AddProductActivity extends AppCompatActivity {
     @BindView(R.id.barcode_logo)
     ImageView barcode_logo;
 
+    String id;
+
     private String barcodeValue;
 
     @Override
@@ -69,7 +71,6 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validateInput()) {
-                    String id = "6223004542060";
                     String Name = mProductNameTxt.getText().toString();
                     double Price = Double.valueOf(mProductPriceTxt.getText().toString());
                     int Quantity = Integer.valueOf(mProductQuantityTxt.getText().toString());
@@ -96,6 +97,7 @@ public class AddProductActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBarcodeDetected(BarcodeDetectedEvent event) {
         mBarcodeValueTxt.setText(event.barcodeValue);
+        id=event.barcodeValue;
         Log.d("onBarcodeDetected", "onBarcodeDetected :)");
     };
 

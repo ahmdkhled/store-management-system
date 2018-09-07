@@ -1,13 +1,13 @@
 package com.ahmdkhled.storemanagmentsystem.model;
 
 public class Product {
-    private int id;
+    private String id;
     private String name;
     private String description;
     private int quantity;
     private double price;
 
-    public Product(int id, String name, String description, int quantity, double price) {
+    public Product(String id, String name, String description, int quantity, double price) {
 
         this.id = id;
         this.name = name;
@@ -16,11 +16,14 @@ public class Product {
         this.price = price;
     }
 
-    public int getId() {
+    public Product() {
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

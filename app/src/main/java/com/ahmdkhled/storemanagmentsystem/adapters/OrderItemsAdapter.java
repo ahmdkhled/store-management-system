@@ -2,6 +2,7 @@ package com.ahmdkhled.storemanagmentsystem.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,13 +52,16 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
 
         void populateOrderItem(){
             OrderItem orderItem=orderItems.get(getAdapterPosition());
-            name.setText(orderItem.getProduct().getName());
-            quantity.setText(orderItem.getQuantity());
+            Log.d("NULLLL",orderItem.getProduct().getPrice()+"--");
+             name.setText(orderItem.getProduct().getName());
+            quantity.setText(String.valueOf(orderItem.getQuantity()));
             price.setText(String.valueOf(orderItem.getProduct().getPrice()));
             double price=orderItem.getProduct().getPrice();
             int quantity=orderItem.getQuantity();
             double totalPrice=price*quantity;
             total.setText(String.valueOf(totalPrice));
+
+
 
         }
     }

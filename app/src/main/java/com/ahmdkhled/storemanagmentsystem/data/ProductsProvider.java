@@ -47,7 +47,7 @@ public class ProductsProvider extends ContentProvider {
         int match = uriMatcher.match(uri);
         if (match==PRODUCTS){
             cursor= database.query(ProductsContract.PRODUCTS,columns,
-                    selections,selectionArgs,null,null,null);
+                    selections,selectionArgs,null,null,sortOrder);
             cursor.setNotificationUri(getContext().getContentResolver(),ProductsContract.productsUri);
             return cursor;
         }
