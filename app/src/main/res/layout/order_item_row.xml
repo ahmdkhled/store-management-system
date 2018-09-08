@@ -9,13 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true"
-        app:cardElevation="2dp"
+        app:cardElevation="1dp"
         >
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:padding="3dp"
             android:background="#fff">
 
             <TextView
@@ -26,7 +26,7 @@
                 app:layout_constraintEnd_toStartOf="@id/orderItemQuantity"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="4"
+                app:layout_constraintHorizontal_weight="8"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 tools:text="Iphone 6s"
@@ -43,7 +43,7 @@
                 app:layout_constraintStart_toEndOf="@+id/orderItemName"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintHorizontal_weight="3"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 tools:text="2"
@@ -57,7 +57,7 @@
                 app:layout_constraintStart_toEndOf="@+id/orderItemQuantity"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintHorizontal_weight="4"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 tools:text="500$"
@@ -71,7 +71,7 @@
                 app:layout_constraintStart_toEndOf="@id/orderItemPrice"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintHorizontal_weight="4"
                 tools:text="1000$"
                 android:textSize="20sp"/>
 
