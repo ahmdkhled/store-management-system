@@ -80,16 +80,14 @@ public class ProductsProvider extends ContentProvider {
         long id=-10;
         if (uriMatcher.match(uri)==PRODUCTS){
             id=database.insert(ProductsContract.PRODUCTS,null,contentValues);
-            Log.d("INSERT","id "+id);
         }else if (uriMatcher.match(uri)==ORDERS){
             id=database.insert(ProductsContract.ORDERS,null,contentValues);
-            Log.d("INSERT","id "+id);
-        }else if (uriMatcher.match(uri)==ORDERS){
+        }else if (uriMatcher.match(uri)==ORDER_ITEMS){
             id=database.insert(ProductsContract.ORDER_ITEMS,null,contentValues);
-            Log.d("INSERT","id "+id);
         }
         if (id>0){
             getContext().getContentResolver().notifyChange(uri, null);
+            Log.d("INSERT","inserted successfully "+id);
             Toast.makeText(getContext(), "successfully saved", Toast.LENGTH_SHORT).show();
             return ContentUris.withAppendedId(ProductsContract.productsUri,id);
         }else {

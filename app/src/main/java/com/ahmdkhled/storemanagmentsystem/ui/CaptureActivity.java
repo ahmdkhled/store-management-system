@@ -61,6 +61,13 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
         mediaPlayer = MediaPlayer.create(this, R.raw.beep);
         handleBarcode();
 
+        doneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
 
     }
 

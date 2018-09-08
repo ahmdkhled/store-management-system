@@ -1,12 +1,16 @@
 package com.ahmdkhled.storemanagmentsystem.ui;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.adapters.OrderItemsAdapter;
@@ -27,6 +31,7 @@ public class OrderActivity extends AppCompatActivity {
     HashMap<String,Integer> itemsMap;
     RecyclerView recyclerView;
     OrderItemsAdapter orderItemsAdapter;
+    Button placeOrder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +39,17 @@ public class OrderActivity extends AppCompatActivity {
         orderItems=new ArrayList<>();
         itemsMap=new HashMap<>();
         recyclerView=findViewById(R.id.orderItemsRecycler);
+        placeOrder=findViewById(R.id.placeOrder);
 
         openCaptureActivity();
         //showFake();
+
+        placeOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                placeOrder();
+            }
+        });
     }
 
     void showFake(){
@@ -68,22 +81,18 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     OrderItem getOrderItem(String id){
-
-        if (itemsMap.containsKey(id)){
-            itemsMap.put(id,itemsMap.get(id)+1);
-            Product product=new Product();
-            product.setId(id);
-            OrderItem orderItem=new OrderItem(product);
-            int pos=orderItems.indexOf(orderItem);
+        Product product=new Product();
+        product.setId(id);
+        OrderItem orderItem=new OrderItem(product);
+        int pos=orderItems.indexOf(orderItem);
+        if (pos>-1){
             orderItems.get(pos).setQuantity(orderItems.get(pos).getQuantity()+1);
             Log.d("QUANTITY","pos :  "+pos);
             orderItemsAdapter.notifyDataSetChanged();
             return null;
-        }else{
-            itemsMap.put(id,1);
         }
 
-        OrderItem orderItem=null;
+        OrderItem mOrderItem=null;
         Cursor cursor=getContentResolver().query(ProductsContract.productsUri
                 ,null,ProductsContract.PRODUCT_ID+
                 " =?",new String[]{id},null);
@@ -94,16 +103,37 @@ public class OrderActivity extends AppCompatActivity {
             Log.d("onBarcodeDetected", "cursor not null");
             String productName=cursor.getString(cursor.getColumnIndex(ProductsContract.NAME));
             Double productPrice=cursor.getDouble(cursor.getColumnIndex(ProductsContract.PRICE));
-            Product product=new Product();
-            product.setName(productName);
-            product.setPrice(productPrice);
-            product.setId(id);
+            Product mProduct=new Product();
+            mProduct.setName(productName);
+            mProduct.setPrice(productPrice);
+            mProduct.setId(id);
             Log.d("onBarcodeDetected", "product name "+productName);
 
-            orderItem=new OrderItem(itemsMap.get(id),product);
+            mOrderItem=new OrderItem(1,mProduct);
         }
 
-        return orderItem;
+        return mOrderItem;
+
+    }
+
+    void placeOrder(){
+        if (orderItems.size()==0){return;}
+
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(ProductsContract.ORDER_DATE,String.valueOf(System.currentTimeMillis()));
+        Uri uri=getContentResolver().insert(ProductsContract.ordersUri,contentValues);
+        int id=Integer.valueOf(uri.getLastPathSegment());
+
+        ContentValues itemsValues=new ContentValues();
+        for(OrderItem orderItem:orderItems){
+            itemsValues.put(ProductsContract.ORDERID,id);
+            itemsValues.put(ProductsContract.PRODUCTID,orderItem.getProduct().getId());
+            itemsValues.put(ProductsContract.ORDER_ITEM_QUANTITY,orderItem.getQuantity());
+            getContentResolver().insert(ProductsContract.orderItemssUri,itemsValues);
+        }
+
+        orderItems.clear();
+        orderItemsAdapter.notifyDataSetChanged();
 
     }
 

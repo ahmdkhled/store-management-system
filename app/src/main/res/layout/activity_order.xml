@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="5dp"
-    android:background="#e7e7e7"
+    android:background="#faf8f8"
     tools:context=".ui.OrderActivity">
 
     <TextView
@@ -64,11 +64,22 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:id="@+id/orderItemsRecycler"
         app:layout_constraintTop_toBottomOf="@+id/orderItemQuantity_label"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:background="#fff"
         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/placeOrder"
+        android:text="place Order"
+        android:background="#fff"
+        android:textAllCaps="false"
+        android:textColor="#388cb9"
+        android:layout_margin="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/orderItemsRecycler"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
