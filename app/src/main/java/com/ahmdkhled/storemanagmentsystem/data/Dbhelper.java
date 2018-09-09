@@ -1,8 +1,11 @@
 package com.ahmdkhled.storemanagmentsystem.data;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.google.android.gms.common.stats.ConnectionTracker;
 
 public class Dbhelper extends SQLiteOpenHelper {
 
@@ -47,5 +50,16 @@ public class Dbhelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.ORDERS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.ORDER_ITEMS);
         onCreate(sqLiteDatabase);
+    }
+
+    public Cursor showOrderItem(String orderId){
+        SQLiteDatabase db = getReadableDatabase();
+        String MY_QUERY = "SELECT * FROM "+ProductsContract.PRODUCTS+
+                " INNER JOIN "+ProductsContract.ORDER_ITEMS+" ON "+
+                ProductsContract.PRODUCTS+"."+ProductsContract.PRODUCT_ID+"="+
+                ProductsContract.ORDER_ITEMS+"."+ProductsContract.PRODUCTID+
+                " WHERE "+ProductsContract.ORDER_ITEMS+"."+ProductsContract.ORDERID+"=?";
+
+       return db.rawQuery(MY_QUERY,new String[]{orderId});
     }
 }

@@ -74,6 +74,7 @@ public class ViewOrders extends AppCompatActivity implements LoaderManager.Loade
     }
 
     private List<Order> getOrders(Cursor data) {
+        mOrders.clear();
         Log.d("vieworders","getOrders");
         if(data != null && data.getCount() > 0){
             Log.d("vieworders","cursor not null");

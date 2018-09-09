@@ -29,13 +29,14 @@
         <provider
             android:name=".data.ProductsProvider"
             android:authorities="com.ahmdkhled.storemanagmentsystem.ProductsProvider"
-            android:exported="false"></provider>
+            android:exported="false" />
 
-        <activity android:name=".ui.ProductDetail"></activity>
+        <activity android:name=".ui.ProductDetail" />
         <activity
             android:name=".ui.OrderActivity"
             android:parentActivityName=".ui.MainActivity" />
-        <activity android:name=".ui.ViewOrders"></activity>
+        <activity android:name=".ui.ViewOrders" />
+        <activity android:name=".ui.OrderDetails"></activity>
     </application>
 
 </manifest>

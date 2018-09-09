@@ -8,6 +8,16 @@
     android:background="#faf8f8"
     tools:context=".ui.OrderActivity">
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
     <TextView
         android:id="@+id/orderItemName_label"
         android:layout_width="0dp"

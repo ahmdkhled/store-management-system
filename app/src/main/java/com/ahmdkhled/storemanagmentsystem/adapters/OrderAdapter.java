@@ -1,6 +1,7 @@
 package com.ahmdkhled.storemanagmentsystem.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.model.Order;
+import com.ahmdkhled.storemanagmentsystem.ui.OrderDetails;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,9 +38,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrderHolder holder, final int position) {
         String date = mOrders.get(position).getDate();
         holder.mOrderDateTxt.setText(date);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, OrderDetails.class);
+                intent.putExtra("order_id",mOrders.get(position).getId());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
