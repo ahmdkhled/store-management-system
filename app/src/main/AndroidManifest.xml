@@ -11,31 +11,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ui.MainActivity"
+        <activity
+            android:name=".ui.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.AddProductActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".ui.AddProductActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.MainActivity" />
         <activity android:name=".ui.CaptureActivity" />
 
         <provider
             android:name=".data.ProductsProvider"
             android:authorities="com.ahmdkhled.storemanagmentsystem.ProductsProvider"
-            android:exported="false">
-        </provider>
+            android:exported="false"></provider>
 
-        <activity android:name=".ui.ProductDetail">
-        </activity>
-        <activity android:name=".ui.OrderActivity"
-            android:parentActivityName=".ui.MainActivity"/>
-
+        <activity android:name=".ui.ProductDetail"></activity>
+        <activity
+            android:name=".ui.OrderActivity"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity android:name=".ui.ViewOrders"></activity>
     </application>
 
 </manifest>

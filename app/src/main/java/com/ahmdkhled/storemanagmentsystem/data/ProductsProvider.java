@@ -60,6 +60,13 @@ public class ProductsProvider extends ContentProvider {
             return cursor;
         }
 
+        else if (match==ORDERS){
+            cursor= database.query(ProductsContract.ORDERS,columns,
+                    selections,selectionArgs,null,null,sortOrder);
+            cursor.setNotificationUri(getContext().getContentResolver(),ProductsContract.productsUri);
+            return cursor;
+        }
+
 
         return null;
     }

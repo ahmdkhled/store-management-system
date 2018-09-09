@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Dbhelper extends SQLiteOpenHelper {
 
     public static final String DBNAME = "store.db";
-    public static final int DBVERSION = 2;
+    public static final int DBVERSION = 8;
 
     public Dbhelper(Context context) {
         super(context, DBNAME, null, DBVERSION);
@@ -26,12 +26,12 @@ public class Dbhelper extends SQLiteOpenHelper {
 
         String CREATE_ORDERS_TABLE = "CREATE TABLE " +ProductsContract.ORDERS+
                 "( "+ProductsContract.PRODUCT_ID+" INTEGER,"
-                 +ProductsContract.ORDER_DATE+" TEXT DEFAULT current_date," +
+                 +ProductsContract.ORDER_DATE+" TEXT ," +
                 " PRIMARY KEY("+ProductsContract.PRODUCT_ID+ ") )";
 
         String CREATE_ORDER_ITEMS_TABLE ="CREATE TABLE "+ProductsContract.ORDER_ITEMS
                 +" ( "+ProductsContract.ORDERID+" INTEGER," +
-                 ProductsContract.PRODUCTID+" INTEGER," +
+                 ProductsContract.PRODUCTID+" TEXT," +
                 ProductsContract.QUANTITY+" INTEGER )";
 
 
@@ -43,6 +43,9 @@ public class Dbhelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.PRODUCTS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.ORDERS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.ORDER_ITEMS);
+        onCreate(sqLiteDatabase);
     }
 }

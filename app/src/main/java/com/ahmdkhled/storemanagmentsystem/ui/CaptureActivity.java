@@ -119,7 +119,7 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
             EventBus.getDefault().post(new AddProductActivity.BarcodeDetectedEvent(barcode.displayValue));
             finish();
         }else
- if (souurce.equals("OrderActivity")){
+            if (souurce.equals("OrderActivity")){
             mediaPlayer.start();
             //Log.d("onBarcodeDetected", "value is :) "+barcode.displayValue);
             EventBus.getDefault().post(new OrderActivity.BarcodeDetectionEvent(barcode.displayValue));

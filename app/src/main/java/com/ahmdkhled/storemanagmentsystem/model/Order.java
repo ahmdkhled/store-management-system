@@ -55,4 +55,7 @@ public class Order implements Parcelable{
         parcel.writeInt(id);
         parcel.writeString(date);
     }
+
+    public Order() {
+    }
 }

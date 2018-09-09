@@ -10,7 +10,7 @@ import com.ahmdkhled.storemanagmentsystem.R;
 
 public class MainActivity extends AppCompatActivity {
     Button goToAddProduct;
-    Button goToOrder;
+    Button goToOrder,mViewOrdersBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         goToAddProduct=findViewById(R.id.goToAddProduct);
         goToOrder=findViewById(R.id.goToOrder);
+        mViewOrdersBtn=findViewById(R.id.view_orders);
 
         goToAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,6 +32,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),OrderActivity.class));
+
+            }
+        });
+
+        mViewOrdersBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),ViewOrders.class));
 
             }
         });

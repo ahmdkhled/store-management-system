@@ -13,7 +13,7 @@ import com.ahmdkhled.storemanagmentsystem.model.OrderItem;
 
 import java.util.ArrayList;
 
-public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.OrderItemHolder> {
+public  class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.OrderItemHolder> {
 
     private ArrayList<OrderItem> orderItems;
 
@@ -27,6 +27,8 @@ public class OrderItemsAdapter extends RecyclerView.Adapter<OrderItemsAdapter.Or
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.order_item_row,parent,false);
         return new OrderItemHolder(v);
     }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull OrderItemHolder holder, int position) {

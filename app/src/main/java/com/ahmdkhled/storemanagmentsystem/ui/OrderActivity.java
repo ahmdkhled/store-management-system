@@ -23,7 +23,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class OrderActivity extends AppCompatActivity {
@@ -126,10 +128,12 @@ public class OrderActivity extends AppCompatActivity {
     void placeOrder(){
         if (orderItems.size()==0){return;}
 
+        // insert into orders
         ContentValues contentValues=new ContentValues();
-        contentValues.put(ProductsContract.ORDER_DATE,String.valueOf(System.currentTimeMillis()));
+        contentValues.put(ProductsContract.ORDER_DATE, DateFormat.getDateTimeInstance().format(new Date()));
         Uri uri=getContentResolver().insert(ProductsContract.ordersUri,contentValues);
-        int id=Integer.valueOf(uri.getLastPathSegment());
+        String id=uri.getLastPathSegment();
+        Log.d("id is ", id+"");
 
         ContentValues itemsValues=new ContentValues();
         for(OrderItem orderItem:orderItems){

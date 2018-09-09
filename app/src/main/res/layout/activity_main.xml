@@ -11,7 +11,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
         android:id="@+id/goToAddProduct_CV"
         app:cardElevation="10dp"
         app:cardUseCompatPadding="true"
@@ -33,7 +33,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="100dp"
         android:id="@+id/goToOrder_CV"
         app:cardElevation="10dp"
         app:cardUseCompatPadding="true"
@@ -47,6 +47,27 @@
             android:layout_height="match_parent"
             android:background="#fff"
             android:text="make Order"
+            android:textAllCaps="false"
+            android:textColor="#228fab"
+            android:textSize="30sp" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/view_order_CV"
+        app:cardElevation="10dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/goToOrder_CV">
+
+        <Button
+            android:id="@+id/view_orders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            android:text="view orders"
             android:textAllCaps="false"
             android:textColor="#228fab"
             android:textSize="30sp" />
