@@ -38,7 +38,6 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
     MediaPlayer mediaPlayer;
     @BindView(R.id.done)
     Button doneBtn;
-
     String souurce;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +126,6 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
         }
 
     }
-
 
 
     @Override

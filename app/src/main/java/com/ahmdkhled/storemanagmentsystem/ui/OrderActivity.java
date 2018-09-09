@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,8 +42,14 @@ public class OrderActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.orderItemsRecycler);
         placeOrder=findViewById(R.id.placeOrder);
 
-        openCaptureActivity();
-        //showFake();
+        if (savedInstanceState==null){
+            Log.d("onSaveInstanceState","i will open capture activity");
+            openCaptureActivity();
+        }else {
+            Log.d("onSaveInstanceState","i will save  capture list ");
+            orderItems=savedInstanceState.getParcelableArrayList("ORDER_ITEMS");
+        }
+
 
         placeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,13 +145,19 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("onSaveInstanceState","Order Activity orientation changed");
+        outState.putParcelableArrayList("ORDER_ITEMS",orderItems);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
-
 
     void openCaptureActivity(){
         Intent capureIntent=new Intent(this,CaptureActivity.class);
