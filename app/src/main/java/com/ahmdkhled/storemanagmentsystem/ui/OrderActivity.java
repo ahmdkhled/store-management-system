@@ -3,6 +3,7 @@ package com.ahmdkhled.storemanagmentsystem.ui;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ public class OrderActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     OrderItemsAdapter orderItemsAdapter;
     Button placeOrder;
+    MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +46,17 @@ public class OrderActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.orderItemsRecycler);
         placeOrder=findViewById(R.id.placeOrder);
 
+
+
         if (savedInstanceState==null){
             Log.d("onSaveInstanceState","i will open capture activity");
             openCaptureActivity();
         }else {
             Log.d("onSaveInstanceState","i will save  capture list ");
             orderItems=savedInstanceState.getParcelableArrayList("ORDER_ITEMS");
+            orderItemsAdapter=new OrderItemsAdapter(orderItems);
+            recyclerView.setAdapter(orderItemsAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
 
 
@@ -75,16 +82,17 @@ public class OrderActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBarcodeDetected(OrderActivity.BarcodeDetectionEvent event) {
         Log.d("onBarcodeDetected", "onBarcodeDetected :) ----" +event.barcodeValue);
-
         addProductItem(getOrderItem(event.barcodeValue));
     };
 
     void addProductItem(OrderItem orderItem){
         if (orderItem!=null){
-        orderItems.add(orderItem);
-        orderItemsAdapter=new OrderItemsAdapter(orderItems);
-        recyclerView.setAdapter(orderItemsAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            mediaPlayer = MediaPlayer.create(this, R.raw.beep);
+            mediaPlayer.start();
+            orderItems.add(orderItem);
+            orderItemsAdapter=new OrderItemsAdapter(orderItems);
+            recyclerView.setAdapter(orderItemsAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
 
     }
@@ -95,6 +103,8 @@ public class OrderActivity extends AppCompatActivity {
         OrderItem orderItem=new OrderItem(product);
         int pos=orderItems.indexOf(orderItem);
         if (pos>-1){
+            mediaPlayer = MediaPlayer.create(this, R.raw.beep);
+            mediaPlayer.start();
             orderItems.get(pos).setQuantity(orderItems.get(pos).getQuantity()+1);
             Log.d("QUANTITY","pos :  "+pos);
             orderItemsAdapter.notifyDataSetChanged();
@@ -119,6 +129,9 @@ public class OrderActivity extends AppCompatActivity {
             Log.d("onBarcodeDetected", "product name "+productName);
 
             mOrderItem=new OrderItem(1,mProduct);
+        }else{
+            mediaPlayer = MediaPlayer.create(this, R.raw.error);
+            mediaPlayer.start();
         }
 
         return mOrderItem;

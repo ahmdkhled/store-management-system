@@ -35,7 +35,6 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
 
     CameraSource cameraSource;
     SurfaceView surfaceView;
-    MediaPlayer mediaPlayer;
     @BindView(R.id.done)
     Button doneBtn;
     String souurce;
@@ -57,7 +56,6 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
             doneBtn.setVisibility(View.GONE);
         }
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.beep);
         handleBarcode();
 
         doneBtn.setOnClickListener(new View.OnClickListener() {
@@ -114,13 +112,11 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
     public void onObjectDetected(final Barcode barcode) {
         Log.d("BARCODE_RES", barcode.displayValue);
         if (souurce.equals("AddProductActivity")){
-            mediaPlayer.start();
             Log.d("onBarcodeDetected", "value is "+barcode.displayValue);
             EventBus.getDefault().post(new AddProductActivity.BarcodeDetectedEvent(barcode.displayValue));
             finish();
         }else
             if (souurce.equals("OrderActivity")){
-            mediaPlayer.start();
             //Log.d("onBarcodeDetected", "value is :) "+barcode.displayValue);
             EventBus.getDefault().post(new OrderActivity.BarcodeDetectionEvent(barcode.displayValue));
         }

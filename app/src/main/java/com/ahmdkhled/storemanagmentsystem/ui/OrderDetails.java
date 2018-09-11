@@ -39,8 +39,7 @@ public class OrderDetails extends AppCompatActivity {
     private static final String TAG = OrderDetails.class.getSimpleName();
     @BindView(R.id.orderItemsRecycler)
     RecyclerView mRecyclerView;
-    @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
+
 
     private OrderItemsAdapter mAdapter;
     private ArrayList<OrderItem> mOrderItems = new ArrayList<>();
@@ -62,7 +61,6 @@ public class OrderDetails extends AppCompatActivity {
             Log.d(TAG, "order id is " + orderId);
             Cursor cursor = dbHelper.showOrderItem(String.valueOf(orderId));
             if (cursor != null && cursor.getCount() != 0) {
-                mProgressBar.setVisibility(View.GONE);
                 mOrderItems = getOrderItemDetails(cursor);
                 mAdapter = new OrderItemsAdapter(mOrderItems);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -2,6 +2,7 @@ package com.ahmdkhled.storemanagmentsystem.ui;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -42,6 +43,7 @@ public class AddProductActivity extends AppCompatActivity {
     Button mSaveBtn;
     @BindView(R.id.barcode_logo)
     ImageView barcode_logo;
+    MediaPlayer mediaPlayer;
 
     String id;
 
@@ -53,6 +55,7 @@ public class AddProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_product);
 
         ButterKnife.bind(this);
+        mediaPlayer = MediaPlayer.create(this, R.raw.beep);
 
         mSaveBtn.setText(R.string.save_btn);
 
@@ -98,6 +101,7 @@ public class AddProductActivity extends AppCompatActivity {
     public void onBarcodeDetected(BarcodeDetectedEvent event) {
         mBarcodeValueTxt.setText(event.barcodeValue);
         id=event.barcodeValue;
+        mediaPlayer.start();
         Log.d("onBarcodeDetected", "onBarcodeDetected :)");
     };
 
