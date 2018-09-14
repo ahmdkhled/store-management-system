@@ -9,7 +9,7 @@ import android.widget.Button;
 import com.ahmdkhled.storemanagmentsystem.R;
 
 public class MainActivity extends AppCompatActivity {
-    Button goToAddProduct;
+    Button goToAddProduct,showProducts;
     Button goToOrder,mViewOrdersBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         goToAddProduct=findViewById(R.id.goToAddProduct);
         goToOrder=findViewById(R.id.goToOrder);
         mViewOrdersBtn=findViewById(R.id.view_orders);
+        showProducts=findViewById(R.id.show_products);
 
         goToAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),ViewOrders.class));
 
+            }
+        });
+
+        showProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),ProductsActivity.class);
+                startActivity(intent);
             }
         });
 

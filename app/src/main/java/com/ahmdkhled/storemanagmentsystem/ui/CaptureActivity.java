@@ -1,12 +1,8 @@
 package com.ahmdkhled.storemanagmentsystem.ui;
 
 import android.Manifest;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,7 +33,7 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
     SurfaceView surfaceView;
     @BindView(R.id.done)
     Button doneBtn;
-    String souurce;
+    String source;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +45,10 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
 
 
         if (getIntent()!=null&&getIntent().hasExtra("source")){
-            souurce=getIntent().getStringExtra("source");
+            source =getIntent().getStringExtra("source");
         }
 
-        if (souurce.equals("AddProductActivity")){
+        if (source.equals("AddProductActivity")){
             doneBtn.setVisibility(View.GONE);
         }
 
@@ -111,14 +107,16 @@ public class CaptureActivity extends AppCompatActivity implements BarcodeTracker
     @Override
     public void onObjectDetected(final Barcode barcode) {
         Log.d("BARCODE_RES", barcode.displayValue);
-        if (souurce.equals("AddProductActivity")){
+        if (source.equals("AddProductActivity")){
             Log.d("onBarcodeDetected", "value is "+barcode.displayValue);
             EventBus.getDefault().post(new AddProductActivity.BarcodeDetectedEvent(barcode.displayValue));
             finish();
-        }else
-            if (souurce.equals("OrderActivity")){
+        }else if (source.equals("OrderActivity")){
             //Log.d("onBarcodeDetected", "value is :) "+barcode.displayValue);
             EventBus.getDefault().post(new OrderActivity.BarcodeDetectionEvent(barcode.displayValue));
+        }else if (source.equals("ProductsActivity")){
+            EventBus.getDefault().post(new ProductsActivity.OnProductDetected(barcode.displayValue));
+            finish();
         }
 
     }

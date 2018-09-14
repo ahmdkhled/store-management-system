@@ -8,6 +8,7 @@ import android.content.Intent;
 
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -83,7 +84,7 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         mProgressDialog.dismiss();
         updateViews(cursor);
 
@@ -128,7 +129,7 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
 

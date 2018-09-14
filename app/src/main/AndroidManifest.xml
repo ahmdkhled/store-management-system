@@ -36,7 +36,8 @@
             android:name=".ui.OrderActivity"
             android:parentActivityName=".ui.MainActivity" />
         <activity android:name=".ui.ViewOrders" />
-        <activity android:name=".ui.OrderDetails"></activity>
+        <activity android:name=".ui.OrderDetails"/>
+        <activity android:name=".ui.ProductsActivity"/>
     </application>
 
 </manifest>
