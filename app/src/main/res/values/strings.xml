@@ -2,4 +2,5 @@
     <string name="app_name">store managment system</string>
     <string name="update_btn">update</string>
     <string name="save_btn">save</string>
+    <string name="category_activity_title">Category</string>
 </resources>
