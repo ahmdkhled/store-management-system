@@ -1,6 +1,8 @@
 # store-management-system
 
 this is an android app that make managing stores inventory easier.
+you can add add products by scanning barcode and add details
+and then make orders by scanning barcode on product.
 
 ## system features
 
