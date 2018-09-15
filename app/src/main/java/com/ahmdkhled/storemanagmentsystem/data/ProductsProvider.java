@@ -20,15 +20,15 @@ public class ProductsProvider extends ContentProvider {
     public static final int ORDERS=201;
     public static final int ORDER_ITEMS=301;
     private static final int PRODUCT_WITH_ID =102 ;
+    private static final int CATEGORYS = 401;
 
     static {
         uriMatcher=new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(ProductsContract.AUTHORITY,ProductsContract.PRODUCTS_PATH,PRODUCTS);
         uriMatcher.addURI(ProductsContract.AUTHORITY,ProductsContract.PRODUCTS_PATH+"/#",PRODUCT_WITH_ID);
         uriMatcher.addURI(ProductsContract.AUTHORITY,ProductsContract.ORDERS_PATH,ORDERS);
-//        matcher.addURI(ProductsContract.AUTHORITY,ProductsContract.ORDERS_PATH+"/#",TASK_WITH_ID);
         uriMatcher.addURI(ProductsContract.AUTHORITY,ProductsContract.ORDERITEMS_PATH,ORDER_ITEMS);
-//        matcher.addURI(ProductsContract.AUTHORITYProductsContract.ORDERITEMS_PATH+"/#",TASK_WITH_ID);
+        uriMatcher.addURI(ProductsContract.AUTHORITY,ProductsContract.CATEGORY_PATH,CATEGORYS);
     }
 
     @Override
@@ -67,6 +67,13 @@ public class ProductsProvider extends ContentProvider {
             return cursor;
         }
 
+        else if (match==CATEGORYS){
+            cursor= database.query(ProductsContract.categoryTable,columns,
+                    selections,selectionArgs,null,null,sortOrder);
+            cursor.setNotificationUri(getContext().getContentResolver(),uri);
+            return cursor;
+        }
+
 
         return null;
     }
@@ -92,6 +99,11 @@ public class ProductsProvider extends ContentProvider {
         }else if (uriMatcher.match(uri)==ORDER_ITEMS){
             id=database.insert(ProductsContract.ORDER_ITEMS,null,contentValues);
         }
+        else if (uriMatcher.match(uri)==CATEGORYS){
+            id=database.insert(ProductsContract.categoryTable,null,contentValues);
+        }
+
+
         if (id>0){
             getContext().getContentResolver().notifyChange(uri, null);
             Log.d("INSERT","inserted successfully "+id);

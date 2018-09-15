@@ -10,7 +10,7 @@ import com.ahmdkhled.storemanagmentsystem.R;
 
 public class MainActivity extends AppCompatActivity {
     Button goToAddProduct,showProducts;
-    Button goToOrder,mViewOrdersBtn;
+    Button goToOrder,mViewOrdersBtn,mAddCategoryBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,12 +20,12 @@ public class MainActivity extends AppCompatActivity {
         goToOrder=findViewById(R.id.goToOrder);
         mViewOrdersBtn=findViewById(R.id.view_orders);
         showProducts=findViewById(R.id.show_products);
+        mAddCategoryBtn=findViewById(R.id.add_category);
 
         goToAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),AddProductActivity.class));
-
             }
         });
 
@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),OrderActivity.class));
-
             }
         });
 
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),ViewOrders.class));
-
             }
         });
 
@@ -49,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(),ProductsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mAddCategoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),CategoryActivity.class);
                 startActivity(intent);
             }
         });

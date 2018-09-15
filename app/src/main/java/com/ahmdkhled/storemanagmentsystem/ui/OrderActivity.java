@@ -102,7 +102,7 @@ public class OrderActivity extends AppCompatActivity {
         product.setId(id);
         OrderItem orderItem=new OrderItem(product);
         int pos=orderItems.indexOf(orderItem);
-        if (pos>-1){
+        if (pos > -1){
             mediaPlayer = MediaPlayer.create(this, R.raw.beep);
             mediaPlayer.start();
             orderItems.get(pos).setQuantity(orderItems.get(pos).getQuantity()+1);
@@ -126,6 +126,7 @@ public class OrderActivity extends AppCompatActivity {
             mProduct.setName(productName);
             mProduct.setPrice(productPrice);
             mProduct.setId(id);
+
             Log.d("onBarcodeDetected", "product name "+productName);
 
             mOrderItem=new OrderItem(1,mProduct);
@@ -139,7 +140,9 @@ public class OrderActivity extends AppCompatActivity {
     }
 
     void placeOrder(){
-        if (orderItems.size()==0){return;}
+        if (orderItems.size()==0){
+            return;
+        }
 
         // insert into orders
         ContentValues contentValues=new ContentValues();

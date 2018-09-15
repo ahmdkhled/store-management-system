@@ -10,7 +10,7 @@ import com.google.android.gms.common.stats.ConnectionTracker;
 public class Dbhelper extends SQLiteOpenHelper {
 
     public static final String DBNAME = "store.db";
-    public static final int DBVERSION = 8;
+    public static final int DBVERSION = 9;
 
     public Dbhelper(Context context) {
         super(context, DBNAME, null, DBVERSION);
@@ -37,10 +37,15 @@ public class Dbhelper extends SQLiteOpenHelper {
                  ProductsContract.PRODUCTID+" TEXT," +
                 ProductsContract.QUANTITY+" INTEGER )";
 
+        String CREATE_CATEGORY_TABLE = "CREATE TABLE "+ProductsContract.categoryTable
+                +" ( "+ProductsContract.categoryID+" INTEGER PRIMARY KEY, "+
+                ProductsContract.categoryName+" TEXT )";
+
 
         sqLiteDatabase.execSQL(CREATE_ITEMS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ORDERS_TABLE);
         sqLiteDatabase.execSQL(CREATE_ORDER_ITEMS_TABLE);
+        sqLiteDatabase.execSQL(CREATE_CATEGORY_TABLE);
 
     }
 
@@ -49,6 +54,7 @@ public class Dbhelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.PRODUCTS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.ORDERS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.ORDER_ITEMS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.categoryTable);
         onCreate(sqLiteDatabase);
     }
 
