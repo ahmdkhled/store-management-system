@@ -37,7 +37,8 @@
             android:parentActivityName=".ui.MainActivity" />
         <activity android:name=".ui.ViewOrders" />
         <activity android:name=".ui.OrderDetails"/>
-        <activity android:name=".ui.ProductsActivity"/>
+        <activity android:name=".ui.ProductsActivity"
+            android:parentActivityName=".ui.MainActivity"/>
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.adapters.ProductsAdapter;
@@ -38,6 +39,7 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
     EditText searchProducts;
     @BindView(R.id.scanProduct)
     ImageView scanProduct;
+
     ArrayList<Product> products;
     LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
     @Override
@@ -76,6 +78,8 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
             }
         });
 
+
+
         scanProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,7 +92,7 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
     }
 
     void populateProducts(ArrayList<Product> products){
-        ProductsAdapter productsAdapter=new ProductsAdapter(products);
+        ProductsAdapter productsAdapter=new ProductsAdapter(this,products);
         productsRecycler.setAdapter(productsAdapter);
         productsRecycler.setLayoutManager(new LinearLayoutManager(this));
     }

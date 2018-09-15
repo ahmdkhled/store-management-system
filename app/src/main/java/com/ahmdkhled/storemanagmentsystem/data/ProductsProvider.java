@@ -48,7 +48,7 @@ public class ProductsProvider extends ContentProvider {
         if (match==PRODUCTS){
             cursor= database.query(ProductsContract.PRODUCTS,columns,
                     selections,selectionArgs,null,null,sortOrder);
-            cursor.setNotificationUri(getContext().getContentResolver(),ProductsContract.productsUri);
+            cursor.setNotificationUri(getContext().getContentResolver(),uri);
             return cursor;
         }
         else if(match==PRODUCT_WITH_ID){
@@ -56,14 +56,14 @@ public class ProductsProvider extends ContentProvider {
             String mSelection = ProductsContract.PRODUCT_ID+"=?";
             String[]mArgs = new String[]{id};
             cursor = database.query(ProductsContract.PRODUCTS,columns,mSelection,mArgs,null,null,sortOrder);
-            cursor.setNotificationUri(getContext().getContentResolver(),ProductsContract.productsUri);
+            cursor.setNotificationUri(getContext().getContentResolver(),uri);
             return cursor;
         }
 
         else if (match==ORDERS){
             cursor= database.query(ProductsContract.ORDERS,columns,
                     selections,selectionArgs,null,null,sortOrder);
-            cursor.setNotificationUri(getContext().getContentResolver(),ProductsContract.productsUri);
+            cursor.setNotificationUri(getContext().getContentResolver(),uri);
             return cursor;
         }
 
