@@ -8,13 +8,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,10 +43,10 @@ public class CategoryActivity extends AppCompatActivity implements LoaderManager
     private static final String TAG = CategoryActivity.class.getSimpleName();
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.add_category_txt)
-    EditText mCategoryTxt;
-    @BindView(R.id.add)
-    Button mAddCAtegoryBtn;
+//    @BindView(R.id.add_category_txt)
+//    EditText mCategoryTxt;
+//    @BindView(R.id.add)
+//    Button mAddCAtegoryBtn;
     @BindView(R.id.category_recycler_view)
     RecyclerView mRecyclerView;
 
@@ -60,29 +66,16 @@ public class CategoryActivity extends AppCompatActivity implements LoaderManager
         getSupportActionBar().setTitle(R.string.category_activity_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         // setup recycler view
         adapter = new CategoryAdapter(categoryList,this);
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);
 
+        // initialize loader
         getSupportLoaderManager().initLoader(CATEGORY_LOADER,null,this);
 
-
-
-        mAddCAtegoryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!TextUtils.isEmpty(mCategoryTxt.getText().toString())){
-                    String category = mCategoryTxt.getText().toString();
-                    ContentValues cv = new ContentValues();
-                    cv.put(ProductsContract.categoryName,category);
-                    getContentResolver().insert(ProductsContract.categoryUri,cv);
-
-                }else
-                    Toast.makeText(CategoryActivity.this, "invalid category", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @NonNull
@@ -119,4 +112,55 @@ public class CategoryActivity extends AppCompatActivity implements LoaderManager
         onBackPressed();
         return true;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.add_category_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.add_category_option){
+            addCategpry();
+            return true;
+        }else return super.onOptionsItemSelected(item);
+
+    }
+
+    private void addCategpry() {
+        // show dialog
+        final AlertDialog.Builder builder = new AlertDialog.Builder(CategoryActivity.this);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = layoutInflater.inflate(R.layout.custom_dialog,null);
+        builder.setView(view);
+        final EditText mCategoryTxt = view.findViewById(R.id.add_category_txt);
+        Button button = view.findViewById(R.id.add);
+
+        final AlertDialog dialog = builder.create();
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"onClick");
+                if(!TextUtils.isEmpty(mCategoryTxt.getText().toString())){
+                    dialog.cancel();
+
+                    String category = mCategoryTxt.getText().toString();
+                    ContentValues cv = new ContentValues();
+                    cv.put(ProductsContract.categoryName,category);
+                    getContentResolver().insert(ProductsContract.categoryUri,cv);
+
+                }else {
+                    dialog.cancel();
+                    Toast.makeText(CategoryActivity.this, "invalid category", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+        });
+        dialog.show();
+
+    }
+
+
 }

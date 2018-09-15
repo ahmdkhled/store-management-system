@@ -8,7 +8,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/category_CV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:cardElevation="10dp"
         app:cardUseCompatPadding="true"
         >
@@ -20,25 +20,27 @@
 
             <TextView
                 android:id="@+id/category_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="#fff"
                 android:padding="5dp"
                 android:text="sdfasdsadsadas"
+                android:layout_gravity="center_vertical"
                 android:textAllCaps="false"
                 android:textColor="#228fab"
                 android:textSize="24sp" />
 
-            <!--<TextView-->
-                <!--android:id="@+id/category_quantity_text"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="#fff"-->
-                <!--android:padding="10dp"-->
-                <!--android:text="2"-->
-                <!--android:textAllCaps="false"-->
-                <!--android:textColor="#228fab"-->
-                <!--android:textSize="24sp" />-->
+            <TextView
+                android:id="@+id/category_quantity_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#fff"
+                android:padding="10dp"
+                android:text="2"
+                android:layout_gravity="end"
+                android:textAllCaps="false"
+                android:textColor="#228fab"
+                android:textSize="24sp" />
 
         </LinearLayout>
 
