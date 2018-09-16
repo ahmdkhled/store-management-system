@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
 import com.ahmdkhled.storemanagmentsystem.model.Category;
+import com.ahmdkhled.storemanagmentsystem.model.Product;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -100,6 +101,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
                     int Quantity = Integer.valueOf(mProductQuantityTxt.getText().toString());
                     String Desc = mProductDescTxt.getText().toString();
                     addProduct(id, Name, Price, Quantity, Desc);
+
                     clearFields();
                 } else {
                     Toast.makeText(getApplicationContext(), "please complete all required fields"
@@ -116,6 +118,8 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         });
 
     }
+
+
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -150,6 +154,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         mProductPriceTxt.setText("0");
         mProductQuantityTxt.setText("0");
         mProductDescTxt.setText("");
+        mBarcodeValueTxt.setText("");
     }
 
 
@@ -228,6 +233,8 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
             this.barcodeValue=barcodeValue;
         }
     }
+
+
 
 }
 

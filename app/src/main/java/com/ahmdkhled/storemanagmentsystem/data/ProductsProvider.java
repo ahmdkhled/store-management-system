@@ -141,6 +141,10 @@ public class ProductsProvider extends ContentProvider {
                 String id = uri.getPathSegments().get(1);
                 mId = database.update(ProductsContract.PRODUCTS,contentValues,ProductsContract.PRODUCT_ID+"=?",new String[]{id});
                 break;
+
+            case  CATEGORYS:
+                mId = database.update(ProductsContract.CATEGPRY_TABLE,contentValues,where,whereArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("invalid uri");
         }
