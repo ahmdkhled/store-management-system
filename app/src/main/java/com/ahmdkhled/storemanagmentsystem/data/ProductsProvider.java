@@ -68,7 +68,7 @@ public class ProductsProvider extends ContentProvider {
         }
 
         else if (match==CATEGORYS){
-            cursor= database.query(ProductsContract.categoryTable,columns,
+            cursor= database.query(ProductsContract.CATEGPRY_TABLE,columns,
                     selections,selectionArgs,null,null,sortOrder);
             cursor.setNotificationUri(getContext().getContentResolver(),uri);
             return cursor;
@@ -100,7 +100,7 @@ public class ProductsProvider extends ContentProvider {
             id=database.insert(ProductsContract.ORDER_ITEMS,null,contentValues);
         }
         else if (uriMatcher.match(uri)==CATEGORYS){
-            id=database.insert(ProductsContract.categoryTable,null,contentValues);
+            id=database.insert(ProductsContract.CATEGPRY_TABLE,null,contentValues);
         }
 
 

@@ -38,8 +38,7 @@ public class ProductsContract {
     public static final String ORDER_ITEM_QUANTITY="quantity";
 
     // category table
-    public static final String categoryTable = "categpry_table";
-    public static final String categoryID = "categpry_id";
-    public static final String categoryName = "categpry_name";
-
+    public static final String CATEGPRY_TABLE = "categpry_table";
+    public static final String CATEGORY_NAME = "categpry_name";
+    public static final String CATEGORY_QUANTITY = "category_quantity";
 }

@@ -2,7 +2,7 @@ package com.ahmdkhled.storemanagmentsystem.model;
 
 public class Category {
     private String name;
-//    private int quantity;
+    private int quantity;
 
     public String getName() {
         return name;
@@ -12,11 +12,11 @@ public class Category {
         this.name = name;
     }
 
-//    public int getQuantity() {
-//        return quantity;
-//    }
-//
-//    public void setQuantity(int quantity) {
-//        this.quantity = quantity;
-//    }
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

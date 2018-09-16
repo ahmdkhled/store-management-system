@@ -13,10 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -92,8 +90,10 @@ public class CategoryActivity extends AppCompatActivity implements LoaderManager
             data.moveToFirst();
             do{
                 Category category = new Category();
-                String name = data.getString(data.getColumnIndex(ProductsContract.categoryName));
+                String name = data.getString(data.getColumnIndex(ProductsContract.CATEGORY_NAME));
+                int quantity = data.getInt(data.getColumnIndex(ProductsContract.CATEGORY_QUANTITY));
                 category.setName(name);
+                category.setQuantity(quantity);
                 categoryList.add(category);
                 Log.d(TAG,"cat name "+name);
             }while (data.moveToNext());
@@ -147,7 +147,8 @@ public class CategoryActivity extends AppCompatActivity implements LoaderManager
 
                     String category = mCategoryTxt.getText().toString();
                     ContentValues cv = new ContentValues();
-                    cv.put(ProductsContract.categoryName,category);
+                    cv.put(ProductsContract.CATEGORY_NAME,category);
+                    cv.put(ProductsContract.CATEGORY_QUANTITY,0);
                     getContentResolver().insert(ProductsContract.categoryUri,cv);
 
                 }else {

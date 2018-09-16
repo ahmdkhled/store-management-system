@@ -3,6 +3,7 @@ package com.ahmdkhled.storemanagmentsystem.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @Override
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
         Category category = mCategoryList.get(position);
+        Log.d("fromCatAdpater","quantity is "+category.getQuantity());
         holder.mCategoryTxt.setText(category.getName());
+        holder.mCategoryQuantityTxt.setText(category.getQuantity()+"");
     }
 
     @Override
@@ -54,6 +57,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         @BindView(R.id.category_text)
         TextView mCategoryTxt;
+        @BindView(R.id.category_quantity_text)
+        TextView mCategoryQuantityTxt;
         public CategoryHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

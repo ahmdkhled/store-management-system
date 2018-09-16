@@ -5,12 +5,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.google.android.gms.common.stats.ConnectionTracker;
-
 public class Dbhelper extends SQLiteOpenHelper {
 
     public static final String DBNAME = "store.db";
-    public static final int DBVERSION = 9;
+    public static final int DBVERSION = 10;
 
     public Dbhelper(Context context) {
         super(context, DBNAME, null, DBVERSION);
@@ -37,9 +35,9 @@ public class Dbhelper extends SQLiteOpenHelper {
                  ProductsContract.PRODUCTID+" TEXT," +
                 ProductsContract.QUANTITY+" INTEGER )";
 
-        String CREATE_CATEGORY_TABLE = "CREATE TABLE "+ProductsContract.categoryTable
-                +" ( "+ProductsContract.categoryID+" INTEGER PRIMARY KEY, "+
-                ProductsContract.categoryName+" TEXT )";
+        String CREATE_CATEGORY_TABLE = "CREATE TABLE "+ProductsContract.CATEGPRY_TABLE
+                +" ( "+ProductsContract.CATEGORY_NAME +" TEXT PRIMARY KEY, "+
+                ProductsContract.CATEGORY_QUANTITY +" INTEGER )";
 
 
         sqLiteDatabase.execSQL(CREATE_ITEMS_TABLE);
@@ -54,7 +52,7 @@ public class Dbhelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.PRODUCTS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.ORDERS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.ORDER_ITEMS);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.categoryTable);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ProductsContract.CATEGPRY_TABLE);
         onCreate(sqLiteDatabase);
     }
 

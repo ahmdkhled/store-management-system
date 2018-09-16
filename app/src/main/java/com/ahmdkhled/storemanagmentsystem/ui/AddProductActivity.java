@@ -2,31 +2,46 @@ package com.ahmdkhled.storemanagmentsystem.ui;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
+import com.ahmdkhled.storemanagmentsystem.model.Category;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddProductActivity extends AppCompatActivity {
+public class AddProductActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = AddProductActivity.class.getSimpleName();
+    private static final int CATEGORY_LOADER = 14;
 
 
     @BindView(R.id.product_name_add)
@@ -43,11 +58,15 @@ public class AddProductActivity extends AppCompatActivity {
     Button mSaveBtn;
     @BindView(R.id.barcode_logo)
     ImageView barcode_logo;
+    @BindView(R.id.category_spinner)
+    Spinner mCategotySpinner;
     MediaPlayer mediaPlayer;
 
     String id;
 
     private String barcodeValue;
+    private List<String> categoryList = new ArrayList<>();
+    private String mCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +88,8 @@ public class AddProductActivity extends AppCompatActivity {
             Log.d(TAG, "barcode value is " + barcodeValue);
         } else Log.d(TAG, "barcode value is null)");
 
+
+        getSupportLoaderManager().initLoader(CATEGORY_LOADER,null,this);
 
         mSaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +172,53 @@ public class AddProductActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        Uri uri = (ProductsContract.categoryUri);
+        return new CursorLoader(this, uri,null,null,null,null);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        if(data != null && data.getCount() > 0){
+            categoryList.clear();
+            data.moveToFirst();
+            do{
+                Category category = new Category();
+                String name = data.getString(data.getColumnIndex(ProductsContract.CATEGORY_NAME));
+                category.setName(name);
+                categoryList.add(category.getName());
+                Log.d(TAG,"cat name "+name);
+            }while (data.moveToNext());
+
+            // setup spinner
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,categoryList);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mCategotySpinner.setAdapter(dataAdapter);
+
+            mCategotySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    mCategory = adapterView.getItemAtPosition(i).toString();
+                    Log.d(TAG,"selected category is "+mCategory);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
 
