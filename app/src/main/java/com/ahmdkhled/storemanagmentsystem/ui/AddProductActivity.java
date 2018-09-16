@@ -101,7 +101,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
                     int Quantity = Integer.valueOf(mProductQuantityTxt.getText().toString());
                     String Desc = mProductDescTxt.getText().toString();
                     addProduct(id, Name, Price, Quantity, Desc);
-
+                    updateQuantityOfCategory();
                     clearFields();
                 } else {
                     Toast.makeText(getApplicationContext(), "please complete all required fields"
@@ -234,7 +234,23 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         }
     }
 
+    private void updateQuantityOfCategory() {
+        // first get current quantity
+        Cursor cursor = getContentResolver().query(ProductsContract.categoryUri,new String[]{ProductsContract.CATEGORY_QUANTITY},
+                ProductsContract.CATEGORY_NAME+"=?",new String[]{mCategory},null);
 
+        if(cursor != null && cursor.getCount() > 0){
+            cursor.moveToFirst();
+            int currentQuantity = cursor.getInt(cursor.getColumnIndex(ProductsContract.CATEGORY_QUANTITY));
+            Log.d(TAG,"current value is "+currentQuantity);
+
+            // then update this value
+            ContentValues cv = new ContentValues();
+            cv.put(ProductsContract.CATEGORY_QUANTITY,currentQuantity+1);
+            getContentResolver().update(ProductsContract.categoryUri,cv,
+                    ProductsContract.CATEGORY_NAME+"=?",new String[]{mCategory});
+        }
+    }
 
 }
 
