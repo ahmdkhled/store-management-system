@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ahmdkhled.storemanagmentsystem.R;
@@ -43,6 +44,10 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
     EditText mProductQuantityTxt;
     @BindView(R.id.btn)
     Button mUpdateBtn;
+    @BindView(R.id.category_edittext)
+    EditText mCategoryTxt;
+    @BindView(R.id.category_spinner)
+    Spinner mCategorySpinner;
 
     private ProgressDialog mProgressDialog;
 
@@ -54,6 +59,9 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
         setContentView(R.layout.activity_add_product);
         // bind views
         ButterKnife.bind(this);
+
+        mCategorySpinner.setVisibility(View.GONE);
+        mCategoryTxt.setVisibility(View.VISIBLE);
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("waiting...");
@@ -100,6 +108,7 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
             final String desc = cursor.getString(cursor.getColumnIndex(ProductsContract.DESCRIPTION));
             final String id = cursor.getString(cursor.getColumnIndex(ProductsContract.PRODUCT_ID));
             final String quantity = cursor.getString(cursor.getColumnIndex(ProductsContract.QUANTITY));
+            final String category = cursor.getString(cursor.getColumnIndex(ProductsContract.CATEGORY_NAME));
 
             Log.d(TAG,"name is "+name);
             Log.d(TAG,"price is "+price);
@@ -110,19 +119,21 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
             mProductPriceTxt.setText(price);
             mProductDescTxt.setText(desc);
             mProductQuantityTxt.setText(quantity);
+            mCategoryTxt.setText(category);
 
             mUpdateBtn.setEnabled(true);
             mUpdateBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ContentValues contentValues=new ContentValues();
-                    contentValues.put(ProductsContract.PRODUCT_ID,id);
-                    contentValues.put(ProductsContract.NAME,name);
-                    contentValues.put(ProductsContract.PRICE,price);
-                    contentValues.put(ProductsContract.QUANTITY,quantity);
-                    contentValues.put(ProductsContract.DESCRIPTION,desc);
-                    Uri uri = ContentUris.withAppendedId(ProductsContract.productsUri, Long.parseLong(id));
-                    getContentResolver().update(uri,contentValues,null,null);
+                    contentValues.put(ProductsContract.NAME,mProductNameTxt.getText().toString());
+                    contentValues.put(ProductsContract.PRICE,mProductPriceTxt.getText().toString());
+                    contentValues.put(ProductsContract.QUANTITY,mProductQuantityTxt.getText().toString());
+                    contentValues.put(ProductsContract.DESCRIPTION,mProductDescTxt.getText().toString());
+                    contentValues.put(ProductsContract.CATEGORY_NAME,mCategoryTxt.getText().toString());
+                    Uri uri = (ProductsContract.productsUri);
+                    getContentResolver().update(uri,contentValues,ProductsContract.PRODUCT_ID+"=?",
+                            new String[]{productId});
                 }
             });
 

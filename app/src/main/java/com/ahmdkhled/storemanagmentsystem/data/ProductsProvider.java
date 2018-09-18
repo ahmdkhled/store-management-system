@@ -148,9 +148,8 @@ public class ProductsProvider extends ContentProvider {
         int match = uriMatcher.match(uri);
         int mId;
         switch (match){
-            case PRODUCT_WITH_ID:
-                String id = uri.getPathSegments().get(1);
-                mId = database.update(ProductsContract.PRODUCTS,contentValues,ProductsContract.PRODUCT_ID+"=?",new String[]{id});
+            case PRODUCTS:
+                mId = database.update(ProductsContract.PRODUCTS,contentValues,where,whereArgs);
                 break;
 
             case  CATEGORYS:

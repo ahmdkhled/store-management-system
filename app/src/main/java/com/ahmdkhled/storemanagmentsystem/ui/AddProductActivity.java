@@ -61,6 +61,8 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
     ImageView barcode_logo;
     @BindView(R.id.category_spinner)
     Spinner mCategotySpinner;
+    @BindView(R.id.category_edittext)
+    EditText mCategoryTxt;
     MediaPlayer mediaPlayer;
 
     String id;
@@ -75,6 +77,9 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         setContentView(R.layout.activity_add_product);
 
         ButterKnife.bind(this);
+        mCategotySpinner.setVisibility(View.VISIBLE);
+        mCategoryTxt.setVisibility(View.GONE);
+
         mediaPlayer = MediaPlayer.create(this, R.raw.beep);
 
         mSaveBtn.setText(R.string.save_btn);
@@ -100,7 +105,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
                     double Price = Double.valueOf(mProductPriceTxt.getText().toString());
                     int Quantity = Integer.valueOf(mProductQuantityTxt.getText().toString());
                     String Desc = mProductDescTxt.getText().toString();
-                    addProduct(id, Name, Price, Quantity, Desc);
+                    addProduct(id, Name, Price, Quantity, Desc,mCategory);
                     updateQuantityOfCategory();
                     clearFields();
                 } else {
@@ -132,14 +137,14 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
 
 
 
-    void addProduct(String id, String name, Double price, int quantity, String desc) {
+    void addProduct(String id, String name, Double price, int quantity, String desc,String category) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ProductsContract.PRODUCT_ID, id);
         contentValues.put(ProductsContract.NAME, name);
         contentValues.put(ProductsContract.PRICE, price);
         contentValues.put(ProductsContract.QUANTITY, quantity);
         contentValues.put(ProductsContract.DESCRIPTION, desc);
-
+        contentValues.put(ProductsContract.CATEGORY_NAME, category);
         getContentResolver().insert(ProductsContract.productsUri, contentValues);
     }
 
