@@ -117,18 +117,29 @@ public class ProductsProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String where, @Nullable String[] whereArgs) {
-        SQLiteDatabase database=dbhelper.getWritableDatabase();
-        if (uriMatcher.match(uri)==PRODUCTS){
-            getContext().getContentResolver().notifyChange(uri,null);
-            return database.delete(ProductsContract.PRODUCTS,where,whereArgs);
-        }else if (uriMatcher.match(uri)==ORDERS){
-            getContext().getContentResolver().notifyChange(uri,null);
-           return database.delete(ProductsContract.ORDERS,where,whereArgs);
-        }else if (uriMatcher.match(uri)==ORDER_ITEMS){
-            getContext().getContentResolver().notifyChange(uri,null);
-            return database.delete(ProductsContract.ORDER_ITEMS,where,whereArgs);
+        SQLiteDatabase db = dbhelper.getWritableDatabase();
+        int match = uriMatcher.match(uri);
+        int mId;
+        switch (match){
+            case PRODUCTS:
+                mId = db.delete(ProductsContract.PRODUCTS,where,whereArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("invalid uri");
         }
-        return 0;
+
+        // if deleted record exist
+        if(mId != 0){
+            getContext().getContentResolver().notifyChange(uri,null);
+            Toast.makeText(getContext(), "deleted", Toast.LENGTH_SHORT).show();
+            return mId;
+        }
+        // if record not exist
+        else{
+            Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
+            return  -1;
+        }
+
     }
 
     @Override

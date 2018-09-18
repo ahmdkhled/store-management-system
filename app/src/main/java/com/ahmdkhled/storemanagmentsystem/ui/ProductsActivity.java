@@ -41,15 +41,19 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
     ImageView scanProduct;
 
     ArrayList<Product> products;
+
     LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
+    private ProductsAdapter productsAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
 
         ButterKnife.bind(this);
-        products=new ArrayList<>();
         loaderCallbacks=this;
+        products = new ArrayList<>();
+        populateProducts(products);
         getLoaderManager().initLoader(11,null,loaderCallbacks);
 
 
@@ -92,7 +96,7 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
     }
 
     void populateProducts(ArrayList<Product> products){
-        ProductsAdapter productsAdapter=new ProductsAdapter(this,products);
+        productsAdapter=new ProductsAdapter(this,products);
         productsRecycler.setAdapter(productsAdapter);
         productsRecycler.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -119,8 +123,8 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.d("CURSOR","onLoadFinished ");
+        products.clear();
         if (cursor!=null&&cursor.getCount()>0){
-            products.clear();
             while (cursor.moveToNext()){
                 String id=cursor.getString(cursor.getColumnIndex(ProductsContract.PRODUCT_ID));
                 String name=cursor.getString(cursor.getColumnIndex(ProductsContract.NAME));
@@ -130,9 +134,10 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
                 products.add(new Product(id,name,desc,quantity,price));
                 Log.d("CURSOR","quantity "+quantity);
             }
-            populateProducts(products);
-            cursor.close();
+//            cursor.close();
         }
+
+        productsAdapter.notifyDataSetChanged();
     }
 
     @Override

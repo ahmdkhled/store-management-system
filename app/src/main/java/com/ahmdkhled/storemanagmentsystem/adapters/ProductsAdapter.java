@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +48,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         return productsList.size();
     }
 
+    
+
+
     class ProductHolder extends RecyclerView.ViewHolder{
         TextView name,price,quantity;
         ImageView options;
@@ -89,13 +93,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
 
     private void deleteProduct(int i){
+        Log.d("fromProductAdapter","onDeleteProduct");
         String id=productsList.get(i).getId();
-        int n=context.getContentResolver().delete(ProductsContract.productsUri,
+        Log.d("fromProductAdapter","id is "+id);
+        context.getContentResolver().delete(ProductsContract.productsUri,
                 ProductsContract.PRODUCT_ID+"=?",new String[]{id});
-        if (n>0){
-            Toast.makeText(context,"product was deleted ",Toast.LENGTH_SHORT).show();
-            productsList.remove(i);
-            notifyItemRemoved(i);
-        }
+
     }
 }
