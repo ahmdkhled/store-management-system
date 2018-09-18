@@ -139,6 +139,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         contentValues.put(ProductsContract.PRICE, price);
         contentValues.put(ProductsContract.QUANTITY, quantity);
         contentValues.put(ProductsContract.DESCRIPTION, desc);
+
         getContentResolver().insert(ProductsContract.productsUri, contentValues);
     }
 

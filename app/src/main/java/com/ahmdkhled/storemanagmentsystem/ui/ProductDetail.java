@@ -46,7 +46,7 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
 
     private ProgressDialog mProgressDialog;
 
-    private String barcodeValue;
+    private String productId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +64,8 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
         // get barcode value from intent
         Intent intent = getIntent();
         if(intent != null && intent.getStringExtra("detail_extra") != null){
-            barcodeValue = intent.getStringExtra("detail_extra");
-            Log.d(TAG,"barcode value is "+barcodeValue);
+            productId = intent.getStringExtra("detail_extra");
+            Log.d(TAG,"barcode value is "+ productId);
             getSupportLoaderManager().initLoader(1,null,this);
         }else Log.d(TAG,"barcode value is null");
 
@@ -79,8 +79,9 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        Uri uri = ContentUris.withAppendedId(ProductsContract.productsUri, Long.parseLong(barcodeValue));
-        return new CursorLoader(this, uri,null,null,null,null);
+        Uri uri = (ProductsContract.productsUri);
+        return new CursorLoader(this, uri,null,ProductsContract.PRODUCT_ID+"=?",
+                new String[]{productId},null);
     }
 
     @Override

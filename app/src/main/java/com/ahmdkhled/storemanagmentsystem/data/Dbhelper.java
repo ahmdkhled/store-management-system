@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Dbhelper extends SQLiteOpenHelper {
 
     public static final String DBNAME = "store.db";
-    public static final int DBVERSION = 10;
+    public static final int DBVERSION = 11;
 
     public Dbhelper(Context context) {
         super(context, DBNAME, null, DBVERSION);
@@ -22,6 +22,7 @@ public class Dbhelper extends SQLiteOpenHelper {
                 ProductsContract.PRICE+" REAL NOT NULL," +
                 ProductsContract.DESCRIPTION+" TEXT DEFAULT 'No description available yet'," +
                 ProductsContract.QUANTITY+" INTEGER," +
+                ProductsContract.CATEGORY_NAME+" TEXT, "+
                 "PRIMARY KEY("+ProductsContract.PRODUCT_ID+")" +
                 ");";
 
