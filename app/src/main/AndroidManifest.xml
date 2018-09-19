@@ -41,7 +41,11 @@
             android:name=".ui.ProductsActivity"
             android:parentActivityName=".ui.MainActivity" />
         <activity android:name=".ui.CategoryActivity"
-            android:theme="@style/NoAction"></activity>
+            android:theme="@style/NoAction">
+        </activity>
+
+        <activity android:name=".ui.DashboardActivity"
+            android:parentActivityName=".ui.MainActivity"/>
     </application>
 
 </manifest>

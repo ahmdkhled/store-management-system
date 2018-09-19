@@ -9,7 +9,7 @@ import android.widget.Button;
 import com.ahmdkhled.storemanagmentsystem.R;
 
 public class MainActivity extends AppCompatActivity {
-    Button goToAddProduct,showProducts;
+    Button goToAddProduct,showProducts,showDashboard;
     Button goToOrder,mViewOrdersBtn,mAddCategoryBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         mViewOrdersBtn=findViewById(R.id.view_orders);
         showProducts=findViewById(R.id.show_products);
         mAddCategoryBtn=findViewById(R.id.add_category);
+        showDashboard=findViewById(R.id.show_dashboard);
 
         goToAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        showDashboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),DashboardActivity.class);
+                startActivity(intent);
+            }
+        });
         mAddCategoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
