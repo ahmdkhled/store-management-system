@@ -1,7 +1,10 @@
 package com.ahmdkhled.storemanagmentsystem.adapters;
 
+import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,8 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
 import com.ahmdkhled.storemanagmentsystem.model.Product;
@@ -21,7 +22,8 @@ import com.ahmdkhled.storemanagmentsystem.ui.ProductDetail;
 
 import java.util.ArrayList;
 
-public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductHolder>{
+public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductHolder>
+{
 
     Context context;
     private ArrayList<Product> productsList;
@@ -29,6 +31,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     public ProductsAdapter(Context context, ArrayList<Product> productsList) {
         this.context = context;
         this.productsList = productsList;
+
     }
 
     @NonNull
@@ -51,9 +54,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
 
 
-    class ProductHolder extends RecyclerView.ViewHolder{
+    class ProductHolder extends RecyclerView.ViewHolder {
         TextView name,price,quantity;
         ImageView options;
+        String categoryName;
         ProductHolder(View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.productName);
@@ -90,6 +94,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             });
 
         }
+
+
     }
 
     private void deleteProduct(int i){
@@ -99,5 +105,27 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         context.getContentResolver().delete(ProductsContract.productsUri,
                 ProductsContract.PRODUCT_ID+"=?",new String[]{id});
 
+        // decrease number of products under this category
+        String mCategory = productsList.get(i).getCategory();
+        Cursor cursor = context.getContentResolver().query(ProductsContract.categoryUri,new String[]{ProductsContract.CATEGORY_QUANTITY},
+                ProductsContract.CATEGORY_NAME+"=?",new String[]{mCategory},null);
+
+        if(cursor != null && cursor.getCount() > 0){
+            cursor.moveToFirst();
+            int currentQuantity = cursor.getInt(cursor.getColumnIndex(ProductsContract.CATEGORY_QUANTITY));
+            Log.d("fromProductAdapter","current value is "+currentQuantity);
+
+            // then update this value
+            ContentValues cv = new ContentValues();
+            cv.put(ProductsContract.CATEGORY_QUANTITY,currentQuantity-1);
+            context.getContentResolver().update(ProductsContract.categoryUri,cv,
+                    ProductsContract.CATEGORY_NAME+"=?",new String[]{mCategory});
+        }
+
+
+
+
     }
+
+
 }

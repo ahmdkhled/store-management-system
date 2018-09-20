@@ -9,17 +9,32 @@ public class Product implements Parcelable{
     private String description;
     private int quantity;
     private double price;
+    private String category;
 
-    public Product(String id, String name, String description, int quantity, double price) {
+    public Product(String id, String name, String description, int quantity, double price
+    ,String category) {
 
         this.id = id;
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
+        this.category = category;
     }
 
     public Product() {
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public static Creator<Product> getCREATOR() {
+        return CREATOR;
     }
 
     protected Product(Parcel in) {

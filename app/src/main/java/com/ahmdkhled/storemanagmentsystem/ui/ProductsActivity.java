@@ -131,7 +131,8 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
                 double price=cursor.getDouble(cursor.getColumnIndex(ProductsContract.PRICE));
                 int quantity=cursor.getInt(cursor.getColumnIndex(ProductsContract.QUANTITY));
                 String desc=cursor.getString(cursor.getColumnIndex(ProductsContract.DESCRIPTION));
-                products.add(new Product(id,name,desc,quantity,price));
+                String category = cursor.getString(cursor.getColumnIndex(ProductsContract.CATEGORY_NAME));
+                products.add(new Product(id,name,desc,quantity,price,category));
                 Log.d("CURSOR","quantity "+quantity);
             }
 //            cursor.close();

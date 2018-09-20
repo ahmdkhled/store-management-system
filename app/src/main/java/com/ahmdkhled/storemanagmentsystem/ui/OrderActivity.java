@@ -68,16 +68,7 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
-    void showFake(){
-        Product product=new Product("23233","iphone","",10,20.0);
-        orderItems.add(new OrderItem(10,product));
-        orderItems.add(new OrderItem(50,product));
-        orderItems.add(new OrderItem(100,product));
-        orderItems.add(new OrderItem(1000,product));
-        OrderItemsAdapter orderItemsAdapter=new OrderItemsAdapter(orderItems);
-        recyclerView.setAdapter(orderItemsAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBarcodeDetected(OrderActivity.BarcodeDetectionEvent event) {
