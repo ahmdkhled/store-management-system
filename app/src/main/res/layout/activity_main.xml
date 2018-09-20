@@ -13,132 +13,134 @@
         android:background="#fdfdfd">
 
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/goToAddProduct_CV"
-        app:cardElevation="10dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <android.support.v7.widget.CardView
+            android:id="@+id/goToAddProduct_CV"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toStartOf="@+id/goToOrder_CV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/goToAddProduct"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#fff"
-            android:text="Add Product"
-            android:textAllCaps="false"
-            android:textColor="#228fab"
-            android:textSize="30sp" />
-    </android.support.v7.widget.CardView>
+            <Button
+                android:id="@+id/goToAddProduct"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:text="Add Product"
+                android:textAllCaps="false"
+                android:textColor="#228fab"
+                android:textSize="30sp"
+                 />
+        </android.support.v7.widget.CardView>
 
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/goToOrder_CV"
-        app:cardElevation="10dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/goToAddProduct_CV">
+        <android.support.v7.widget.CardView
+            android:id="@+id/goToOrder_CV"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/goToAddProduct_CV"
+            app:layout_constraintTop_toTopOf="@id/goToAddProduct_CV">
 
-        <Button
-            android:id="@+id/goToOrder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#fff"
-            android:text="make Order"
-            android:textAllCaps="false"
-            android:textColor="#228fab"
-            android:textSize="30sp" />
-    </android.support.v7.widget.CardView>
+            <Button
+                android:id="@+id/goToOrder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:text="make Order"
+                android:textAllCaps="false"
+                android:textColor="#228fab"
+                android:textSize="30sp" />
+        </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/view_order_CV"
-        app:cardElevation="10dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/goToOrder_CV">
+        <android.support.v7.widget.CardView
+            android:id="@+id/view_order_CV"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toStartOf="@id/dashboard_CV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/goToAddProduct_CV">
 
-        <Button
-            android:id="@+id/view_orders"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#fff"
-            android:text="view orders"
-            android:textAllCaps="false"
-            android:textColor="#228fab"
-            android:textSize="30sp" />
-    </android.support.v7.widget.CardView>
+            <Button
+                android:id="@+id/view_orders"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:text="view orders"
+                android:textAllCaps="false"
+                android:textColor="#228fab"
+                android:textSize="30sp" />
+        </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/dashboard_CV"
-        app:cardElevation="10dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_order_CV">
+        <android.support.v7.widget.CardView
+            android:id="@+id/dashboard_CV"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/view_order_CV"
+            app:layout_constraintTop_toTopOf="@id/view_order_CV">
 
-        <Button
-            android:id="@+id/show_dashboard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#fff"
-            android:text="Dashboard"
-            android:textAllCaps="false"
-            android:textColor="#228fab"
-            android:textSize="30sp" />
-    </android.support.v7.widget.CardView>
+            <Button
+                android:id="@+id/show_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:text="Dashboard"
+                android:textAllCaps="false"
+                android:textColor="#228fab"
+                android:textSize="30sp" />
+        </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/products_CV"
-        app:cardElevation="10dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dashboard_CV">
+        <android.support.v7.widget.CardView
+            android:id="@+id/products_CV"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toStartOf="@+id/category_CV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dashboard_CV">
 
-        <Button
-            android:id="@+id/show_products"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#fff"
-            android:text="products"
-            android:textAllCaps="false"
-            android:textColor="#228fab"
-            android:textSize="30sp" />
-    </android.support.v7.widget.CardView>
+            <Button
+                android:id="@+id/show_products"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:text="products"
+                android:textAllCaps="false"
+                android:textColor="#228fab"
+                android:textSize="30sp" />
+        </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:id="@+id/category_CV"
-    app:cardElevation="10dp"
-    app:cardUseCompatPadding="true"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/products_CV">
+        <android.support.v7.widget.CardView
+            android:id="@+id/category_CV"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/products_CV"
+            app:layout_constraintTop_toTopOf="@+id/products_CV">
 
-    <Button
-        android:id="@+id/add_category"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#fff"
-        android:text="CATEGORY"
-        android:textAllCaps="false"
-        android:textColor="#228fab"
-        android:textSize="30sp" />
-</android.support.v7.widget.CardView>
+            <Button
+                android:id="@+id/add_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:text="Category"
+                android:textAllCaps="false"
+                android:textColor="#228fab"
+                android:textSize="30sp" />
+        </android.support.v7.widget.CardView>
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>
