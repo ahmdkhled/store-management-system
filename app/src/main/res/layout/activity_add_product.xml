@@ -138,12 +138,14 @@
         android:id="@+id/category_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="category"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/product_desc_label"
-        tools:layout_editor_absoluteX="5dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/product_desc_label" />
 
 
 
@@ -157,7 +159,7 @@
         android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <Spinner
+    <com.ahmdkhled.storemanagmentsystem.utils.Spinner
         android:id="@+id/category_spinner"
         android:layout_width="200dp"
         android:layout_height="wrap_content"

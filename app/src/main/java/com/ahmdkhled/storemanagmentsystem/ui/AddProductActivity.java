@@ -20,14 +20,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
 import com.ahmdkhled.storemanagmentsystem.model.Category;
-import com.ahmdkhled.storemanagmentsystem.model.Product;
+import com.ahmdkhled.storemanagmentsystem.utils.Spinner;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,7 +43,6 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
     private static final String TAG = AddProductActivity.class.getSimpleName();
     private static final int CATEGORY_LOADER = 14;
 
-
     @BindView(R.id.product_name_add)
     EditText mProductNameTxt;
     @BindView(R.id.product_price_add)
@@ -60,7 +58,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
     @BindView(R.id.barcode_logo)
     ImageView barcode_logo;
     @BindView(R.id.category_spinner)
-    Spinner mCategotySpinner;
+    Spinner mCategorySpinner;
     @BindView(R.id.category_edittext)
     EditText mCategoryTxt;
     MediaPlayer mediaPlayer;
@@ -77,7 +75,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         setContentView(R.layout.activity_add_product);
 
         ButterKnife.bind(this);
-        mCategotySpinner.setVisibility(View.VISIBLE);
+        mCategorySpinner.setVisibility(View.VISIBLE);
         mCategoryTxt.setVisibility(View.GONE);
 
         mediaPlayer = MediaPlayer.create(this, R.raw.beep);
@@ -92,8 +90,8 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
             barcodeValue = intent.getStringExtra("add_extra");
             mBarcodeValueTxt.setText(barcodeValue);
             Log.d(TAG, "barcode value is " + barcodeValue);
-        } else Log.d(TAG, "barcode value is null)");
-
+        } else
+            Log.d(TAG, "barcode value is null)");
 
         getSupportLoaderManager().initLoader(CATEGORY_LOADER,null,this);
 
@@ -122,10 +120,24 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
             }
         });
 
+        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i==0){
+                    Intent categoryIntent=new Intent(getApplicationContext(),CategoryActivity.class);
+                    startActivity(categoryIntent);
+                }else{
+                    mCategory=categoryList.get(i);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
-
-
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBarcodeDetected(BarcodeDetectedEvent event) {
@@ -195,34 +207,24 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        Log.d(TAG,"on load finished ");
         if(data != null && data.getCount() > 0){
             categoryList.clear();
+            categoryList.add(0,"add new category");
             data.moveToFirst();
             do{
                 Category category = new Category();
                 String name = data.getString(data.getColumnIndex(ProductsContract.CATEGORY_NAME));
                 category.setName(name);
                 categoryList.add(category.getName());
-                Log.d(TAG,"cat name "+name);
+                //Log.d(TAG,"cat name "+name);
             }while (data.moveToNext());
 
             // setup spinner
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,categoryList);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item
+                    ,categoryList);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mCategotySpinner.setAdapter(dataAdapter);
-
-            mCategotySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    mCategory = adapterView.getItemAtPosition(i).toString();
-                    Log.d(TAG,"selected category is "+mCategory);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
+            mCategorySpinner.setAdapter(dataAdapter);
 
         }
 
