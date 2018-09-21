@@ -123,10 +123,12 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i==0){
+                if (i==1){
+                    Log.d(TAG,"setOnItemSelectedListener");
+                    mCategory=null;
                     Intent categoryIntent=new Intent(getApplicationContext(),CategoryActivity.class);
                     startActivity(categoryIntent);
-                }else{
+                }else if (i>1){
                     mCategory=categoryList.get(i);
                 }
             }
@@ -163,7 +165,8 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
     boolean validateInput() {
         return (!TextUtils.isEmpty(mProductNameTxt.getText().toString())
                 && !TextUtils.isEmpty(mProductPriceTxt.getText().toString())
-                && !TextUtils.isEmpty(mProductQuantityTxt.getText().toString()));
+                && !TextUtils.isEmpty(mProductQuantityTxt.getText().toString())
+                && !TextUtils.isEmpty(mCategory));
 
     }
 
@@ -173,6 +176,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         mProductQuantityTxt.setText("0");
         mProductDescTxt.setText("");
         mBarcodeValueTxt.setText("");
+        mCategorySpinner.setSelection(0);
     }
 
 
@@ -210,7 +214,8 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         Log.d(TAG,"on load finished ");
         if(data != null && data.getCount() > 0){
             categoryList.clear();
-            categoryList.add(0,"add new category");
+            categoryList.add("no category");
+            categoryList.add("add new category");
             data.moveToFirst();
             do{
                 Category category = new Category();
