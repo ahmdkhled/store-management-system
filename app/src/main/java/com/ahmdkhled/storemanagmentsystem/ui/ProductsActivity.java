@@ -33,6 +33,7 @@ import butterknife.ButterKnife;
 
 public class ProductsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final String TAG = ProductsActivity.class.getSimpleName();
     @BindView(R.id.productsRecycler)
     RecyclerView productsRecycler;
     @BindView(R.id.ProductsSearchBox)
@@ -44,6 +45,7 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
 
     LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
     private ProductsAdapter productsAdapter;
+    private String mCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,17 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
         loaderCallbacks=this;
         products = new ArrayList<>();
         populateProducts(products);
-        getLoaderManager().initLoader(11,null,loaderCallbacks);
+
+        if(getIntent()!= null && getIntent().getStringExtra("show_category_products") != null){
+            mCategory = getIntent().getStringExtra("show_category_products");
+            Bundle bundle = new Bundle();
+            bundle.putString("category_bundle",mCategory);
+            getLoaderManager().initLoader(11,bundle,loaderCallbacks);
+        }
+
+        else {
+            getLoaderManager().initLoader(11, null, loaderCallbacks);
+        }
 
 
         searchProducts.addTextChangedListener(new TextWatcher() {
@@ -116,12 +128,18 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
             String id=bundle.getString("ID");
             return new CursorLoader(this, ProductsContract.productsUri,null,
                     ProductsContract.PRODUCT_ID+" =?",new String[]{id},null);
+        }else if(bundle.containsKey("category_bundle")){
+            Log.d(TAG,"show products with specific category");
+            return new CursorLoader(this, ProductsContract.productsUri,null,
+                    ProductsContract.CATEGORY_NAME+" =?"
+                    ,new String[]{bundle.getString("category_bundle")},null);
         }
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d(TAG,"loader id is "+loader.getId());
         Log.d("CURSOR","onLoadFinished ");
         products.clear();
         if (cursor!=null&&cursor.getCount()>0){
