@@ -10,10 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,6 +44,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
 
     private static final String TAG = AddProductActivity.class.getSimpleName();
     private static final int CATEGORY_LOADER = 14;
+    public static final int ADD_NEW_CATEGORY_REQUEST = 70;
 
     @BindView(R.id.product_name_add)
     EditText mProductNameTxt;
@@ -123,14 +126,15 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG,"setOnItemSelectedListener");
                 if (i==1){
-                    Log.d(TAG,"setOnItemSelectedListener");
                     mCategory=null;
-                    Intent categoryIntent=new Intent(getApplicationContext(),CategoryActivity.class);
-                    startActivity(categoryIntent);
+                    addNewCategory();
                 }else if (i>1){
                     mCategory=categoryList.get(i);
                 }
+
+
             }
 
             @Override
@@ -140,6 +144,8 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
         });
 
     }
+
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBarcodeDetected(BarcodeDetectedEvent event) {
@@ -231,6 +237,8 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mCategorySpinner.setAdapter(dataAdapter);
 
+
+
         }
 
     }
@@ -264,6 +272,44 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
                     ProductsContract.CATEGORY_NAME+"=?",new String[]{mCategory});
         }
     }
+
+    private void addNewCategory() {
+        // show dialog
+        final AlertDialog.Builder builder = new AlertDialog.Builder(AddProductActivity.this);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = layoutInflater.inflate(R.layout.custom_dialog,null);
+        builder.setView(view);
+        final EditText mCategoryTxt = view.findViewById(R.id.add_category_txt);
+        Button button = view.findViewById(R.id.add);
+        final AlertDialog dialog = builder.create();
+        button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG,"onClick");
+                    if(!TextUtils.isEmpty(mCategoryTxt.getText().toString())){
+                        dialog.cancel();
+
+                        mCategory = mCategoryTxt.getText().toString();
+
+                        // save new category
+                        ContentValues cv = new ContentValues();
+                        cv.put(ProductsContract.CATEGORY_NAME,mCategory);
+                        cv.put(ProductsContract.CATEGORY_QUANTITY,0);
+                        getContentResolver().insert(ProductsContract.categoryUri,cv);
+
+                    }else {
+                        dialog.cancel();
+                        Toast.makeText(AddProductActivity.this, "invalid category", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+            });
+            dialog.show();
+
+        }
+
+
 
 }
 
