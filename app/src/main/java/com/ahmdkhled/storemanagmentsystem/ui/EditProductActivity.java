@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
@@ -174,14 +176,22 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
     }
 
     private void updateProductDetails() {
-        ContentValues contentValues=new ContentValues();
-        contentValues.put(ProductsContract.NAME,mProductNameTxt.getText().toString());
-        contentValues.put(ProductsContract.PRICE,mProductPriceTxt.getText().toString());
-        contentValues.put(ProductsContract.QUANTITY,mProductQuantityTxt.getText().toString());
-        contentValues.put(ProductsContract.CATEGORY_NAME,mCategoryTxt.getText().toString());
-        Uri uri = (ProductsContract.productsUri);
-        getContentResolver().update(uri,contentValues,ProductsContract.PRODUCT_ID+"=?",
-                new String[]{productId});
+        if(validInputs()) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(ProductsContract.NAME, mProductNameTxt.getText().toString());
+            contentValues.put(ProductsContract.PRICE, mProductPriceTxt.getText().toString());
+            contentValues.put(ProductsContract.QUANTITY, mProductQuantityTxt.getText().toString());
+            contentValues.put(ProductsContract.CATEGORY_NAME, mCategoryTxt.getText().toString());
+            Uri uri = (ProductsContract.productsUri);
+            getContentResolver().update(uri, contentValues, ProductsContract.PRODUCT_ID + "=?",
+                    new String[]{productId});
+            finish();
+        }else Toast.makeText(this, "please fill all fields", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean validInputs() {
+        return !TextUtils.isEmpty(mProductNameTxt.getText()) && !TextUtils.isEmpty(mProductPriceTxt.getText()) &&
+                !TextUtils.isEmpty(mProductQuantityTxt.getText());
     }
 
     @Override
