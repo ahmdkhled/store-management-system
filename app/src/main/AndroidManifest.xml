@@ -31,15 +31,26 @@
             android:authorities="com.ahmdkhled.storemanagmentsystem.ProductsProvider"
             android:exported="false" />
 
-        <activity android:name=".ui.ProductDetail" />
+        <activity android:name=".ui.EditProductActivity"
+            android:theme="@style/NoAction"/>
+
+
         <activity
             android:name=".ui.OrderActivity"
             android:parentActivityName=".ui.MainActivity" />
+
+
         <activity android:name=".ui.ViewOrders" />
+
+
         <activity android:name=".ui.OrderDetails" />
+
+
         <activity
             android:name=".ui.ProductsActivity"
             android:parentActivityName=".ui.MainActivity" />
+
+
         <activity android:name=".ui.CategoryActivity"
             android:theme="@style/NoAction">
         </activity>

@@ -2,7 +2,6 @@ package com.ahmdkhled.storemanagmentsystem.ui;
 
 
 import android.app.ProgressDialog;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 
@@ -14,11 +13,12 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.ahmdkhled.storemanagmentsystem.R;
@@ -27,27 +27,35 @@ import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProductDetail extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class EditProductActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
-    private static final String TAG = ProductDetail.class.getSimpleName();
+    private static final String TAG = EditProductActivity.class.getSimpleName();
 
-    @BindView(R.id.barcode_value)
-    TextView mBarcodeValueTxt;
-    @BindView(R.id.product_name_add)
+    @BindView(R.id.product_barcode_value)
+    TextView mProductBarcode;
+
+    @BindView(R.id.edit_product_name)
     EditText mProductNameTxt;
-    @BindView(R.id.product_price_add)
+
+    @BindView(R.id.edit_product_price)
     EditText mProductPriceTxt;
-    @BindView(R.id.product_desc_add)
-    EditText mProductDescTxt;
-    @BindView(R.id.product_quantity_add)
+
+    @BindView(R.id.decrease_quantity_btn)
+    ImageButton mdecreaseQuantityBtn;
+
+    @BindView(R.id.edit_product_quantity)
     EditText mProductQuantityTxt;
-    @BindView(R.id.btn)
-    Button mUpdateBtn;
-    @BindView(R.id.category_edittext)
-    EditText mCategoryTxt;
-    @BindView(R.id.category_spinner)
-    Spinner mCategorySpinner;
+
+    @BindView(R.id.increase_quantity_btn)
+    ImageButton mIncreaseQuantityBtn;
+
+    @BindView(R.id.product_category_value)
+    TextView mCategoryTxt;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
 
     private ProgressDialog mProgressDialog;
 
@@ -56,13 +64,14 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_product);
+        setContentView(R.layout.acitvity_edit_product);
         // bind views
         ButterKnife.bind(this);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(R.string.edit_activity_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mCategorySpinner.setVisibility(View.GONE);
-        mCategoryTxt.setVisibility(View.VISIBLE);
-
+        // show dialog until getting data
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("waiting...");
         mProgressDialog.show();
@@ -78,8 +87,7 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
         }else Log.d(TAG,"barcode value is null");
 
 
-        mUpdateBtn.setText(R.string.update_btn);
-        mUpdateBtn.setEnabled(false);
+
 
     }
 
@@ -114,28 +122,12 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
             Log.d(TAG,"price is "+price);
             Log.d(TAG,"desc is "+desc);
 
-            mBarcodeValueTxt.setText(id);
+            mProductBarcode.setText(id);
             mProductNameTxt.setText(name);
             mProductPriceTxt.setText(price);
-            mProductDescTxt.setText(desc);
             mProductQuantityTxt.setText(quantity);
             mCategoryTxt.setText(category);
 
-            mUpdateBtn.setEnabled(true);
-            mUpdateBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ContentValues contentValues=new ContentValues();
-                    contentValues.put(ProductsContract.NAME,mProductNameTxt.getText().toString());
-                    contentValues.put(ProductsContract.PRICE,mProductPriceTxt.getText().toString());
-                    contentValues.put(ProductsContract.QUANTITY,mProductQuantityTxt.getText().toString());
-                    contentValues.put(ProductsContract.DESCRIPTION,mProductDescTxt.getText().toString());
-                    contentValues.put(ProductsContract.CATEGORY_NAME,mCategoryTxt.getText().toString());
-                    Uri uri = (ProductsContract.productsUri);
-                    getContentResolver().update(uri,contentValues,ProductsContract.PRODUCT_ID+"=?",
-                            new String[]{productId});
-                }
-            });
 
         }else Log.d(TAG,"cursor is null");
     }
@@ -145,4 +137,34 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_product_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.done){
+            updateProductDetails();
+            return true;
+        }else return super.onOptionsItemSelected(item);
+    }
+
+    private void updateProductDetails() {
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(ProductsContract.NAME,mProductNameTxt.getText().toString());
+        contentValues.put(ProductsContract.PRICE,mProductPriceTxt.getText().toString());
+        contentValues.put(ProductsContract.QUANTITY,mProductQuantityTxt.getText().toString());
+        contentValues.put(ProductsContract.CATEGORY_NAME,mCategoryTxt.getText().toString());
+        Uri uri = (ProductsContract.productsUri);
+        getContentResolver().update(uri,contentValues,ProductsContract.PRODUCT_ID+"=?",
+                new String[]{productId});
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
