@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -58,8 +59,8 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
 
 
     private ProgressDialog mProgressDialog;
-
     private String productId;
+    private int mQuantity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,16 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
         }else Log.d(TAG,"barcode value is null");
 
 
+        // increase & decrease quantity of product
+        mIncreaseQuantityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mQuantity++;
+                mProductQuantityTxt.setText(mQuantity+"");
+            }
+        });
+
+       
 
 
     }
@@ -109,23 +120,25 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
     }
 
     private void updateViews(Cursor cursor) {
+        // first get product details
         if(cursor.getCount() != 0){
             cursor.moveToFirst();
-            final String name = cursor.getString(cursor.getColumnIndex(ProductsContract.NAME));
-            final String price = cursor.getString(cursor.getColumnIndex(ProductsContract.PRICE));
-            final String desc = cursor.getString(cursor.getColumnIndex(ProductsContract.DESCRIPTION));
-            final String id = cursor.getString(cursor.getColumnIndex(ProductsContract.PRODUCT_ID));
-            final String quantity = cursor.getString(cursor.getColumnIndex(ProductsContract.QUANTITY));
-            final String category = cursor.getString(cursor.getColumnIndex(ProductsContract.CATEGORY_NAME));
+            String name = cursor.getString(cursor.getColumnIndex(ProductsContract.NAME));
+            String price = cursor.getString(cursor.getColumnIndex(ProductsContract.PRICE));
+            String desc = cursor.getString(cursor.getColumnIndex(ProductsContract.DESCRIPTION));
+            String id = cursor.getString(cursor.getColumnIndex(ProductsContract.PRODUCT_ID));
+            mQuantity = cursor.getInt(cursor.getColumnIndex(ProductsContract.QUANTITY));
+            String category = cursor.getString(cursor.getColumnIndex(ProductsContract.CATEGORY_NAME));
 
             Log.d(TAG,"name is "+name);
             Log.d(TAG,"price is "+price);
             Log.d(TAG,"desc is "+desc);
 
+            // then update views
             mProductBarcode.setText(id);
             mProductNameTxt.setText(name);
             mProductPriceTxt.setText(price);
-            mProductQuantityTxt.setText(quantity);
+            mProductQuantityTxt.setText(mQuantity+"");
             mCategoryTxt.setText(category);
 
 
