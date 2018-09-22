@@ -97,7 +97,16 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
             }
         });
 
-       
+        mdecreaseQuantityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mQuantity > 0){
+                    mQuantity--;
+                    mProductQuantityTxt.setText(mQuantity+"");
+                }
+
+            }
+        });
 
 
     }
