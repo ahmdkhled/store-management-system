@@ -130,7 +130,9 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
         // search by
         if(bundle != null && bundle.containsKey("type") && bundle.containsKey("value")) {
             String searchBy = bundle.getString("type");
-            String value =bundle.getString(("value"));
+
+            // to get all products that contain some letters
+            String value = "%"+bundle.getString(("value"))+"%";
             Log.d("loader","value is "+value);
             Log.d("loader","search "+searchBy);
             return new CursorLoader(this, ProductsContract.productsUri,null,
