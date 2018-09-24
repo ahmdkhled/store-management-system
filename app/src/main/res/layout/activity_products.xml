@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.ProductsActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/toolbar"
+        app:titleTextColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -14,7 +22,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:id="@+id/search_contaner">
+        android:id="@+id/search_contaner"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
         <EditText
             android:layout_width="0dp"
             android:layout_height="match_parent"

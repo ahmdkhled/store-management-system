@@ -5,4 +5,5 @@
     <string name="category_activity_title">Category</string>
     <string name="spinner_title">choose a category</string>
     <string name="edit_activity_title">Edit Product</string>
+    <string name="product_activity_title">Products</string>
 </resources>

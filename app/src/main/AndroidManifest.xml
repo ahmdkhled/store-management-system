@@ -48,7 +48,8 @@
 
         <activity
             android:name=".ui.ProductsActivity"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/NoAction"/>
 
 
         <activity android:name=".ui.CategoryActivity"

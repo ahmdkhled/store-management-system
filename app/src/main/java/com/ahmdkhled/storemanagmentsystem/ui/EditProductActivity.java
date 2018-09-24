@@ -70,6 +70,8 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
         setContentView(R.layout.acitvity_edit_product);
         // bind views
         ButterKnife.bind(this);
+
+        // setup toolbar
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.edit_activity_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

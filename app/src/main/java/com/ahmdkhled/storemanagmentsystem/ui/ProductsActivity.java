@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,12 +43,15 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
     EditText searchProducts;
     @BindView(R.id.scanProduct)
     ImageView scanProduct;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     ArrayList<Product> products;
 
     LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
     private ProductsAdapter productsAdapter;
     private String mCategory;
+    String searchBy = ProductsContract.NAME;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +61,19 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
         ButterKnife.bind(this);
         loaderCallbacks=this;
         products = new ArrayList<>();
+
+        // setup toolbar
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(R.string.product_activity_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         populateProducts(products);
 
         if(getIntent()!= null && getIntent().getStringExtra("show_category_products") != null){
             mCategory = getIntent().getStringExtra("show_category_products");
             Bundle bundle = new Bundle();
-            bundle.putString("category_bundle",mCategory);
+            bundle.putString("value",mCategory);
+            bundle.putString("type",ProductsContract.CATEGORY_NAME);
             getLoaderManager().initLoader(11,bundle,loaderCallbacks);
         }
 
@@ -81,9 +94,7 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
                 if (charSequence.length()==0){
                     getLoaderManager().restartLoader(11,null,loaderCallbacks);
                 }else {
-                    Bundle bundle=new Bundle();
-                    bundle.putString("NAME",String.valueOf(charSequence));
-                    getLoaderManager().restartLoader(11,bundle,loaderCallbacks);
+                    restartLoader(searchBy,String.valueOf(charSequence));
                 }
 
             }
@@ -116,31 +127,29 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        if (bundle==null){
+
+        // search by
+        if(bundle != null && bundle.containsKey("type") && bundle.containsKey("value")) {
+            String searchBy = bundle.getString("type");
+            String value =bundle.getString(("value"));
+            Log.d("loader","value is "+value);
+            Log.d("loader","search "+searchBy);
+            return new CursorLoader(this, ProductsContract.productsUri,null,
+                    searchBy+" LIKE?",new String[]{value},null);
+        }
+
+        // default search
+        else{
             return new CursorLoader(this, ProductsContract.productsUri,null,
                     null,null,null);
         }
-        if (bundle.containsKey("NAME")){
-            String name=bundle.getString("NAME");
-            return new CursorLoader(this, ProductsContract.productsUri,null,
-                    ProductsContract.NAME+" LIKE?",new String[]{name},null);
-        }else if (bundle.containsKey("ID")){
-            String id=bundle.getString("ID");
-            return new CursorLoader(this, ProductsContract.productsUri,null,
-                    ProductsContract.PRODUCT_ID+" =?",new String[]{id},null);
-        }else if(bundle.containsKey("category_bundle")){
-            Log.d(TAG,"show products with specific category");
-            return new CursorLoader(this, ProductsContract.productsUri,null,
-                    ProductsContract.CATEGORY_NAME+" =?"
-                    ,new String[]{bundle.getString("category_bundle")},null);
-        }
-        return null;
+
+
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.d(TAG,"loader id is "+loader.getId());
-        Log.d("CURSOR","onLoadFinished ");
+        Log.d("loader","onLoadFinished ");
         products.clear();
         if (cursor!=null&&cursor.getCount()>0){
             while (cursor.moveToNext()){
@@ -151,7 +160,7 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
                 String desc=cursor.getString(cursor.getColumnIndex(ProductsContract.DESCRIPTION));
                 String category = cursor.getString(cursor.getColumnIndex(ProductsContract.CATEGORY_NAME));
                 products.add(new Product(id,name,desc,quantity,price,category));
-                Log.d("CURSOR","quantity "+quantity);
+                Log.d("loader","name "+name);
             }
 //            cursor.close();
         }
@@ -189,5 +198,33 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
         public OnProductDetected(String id) {
             this.id = id;
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.search_by_category){
+            searchBy = ProductsContract.CATEGORY_NAME;
+            return true;
+        }else return super.onOptionsItemSelected(item);
+    }
+
+
+    private void restartLoader(String searchBy,String charSequence) {
+        Bundle bundle = new Bundle();
+        bundle.putString("type",searchBy);
+        bundle.putString("value",charSequence);
+        getLoaderManager().restartLoader(11,bundle,loaderCallbacks);
     }
 }
