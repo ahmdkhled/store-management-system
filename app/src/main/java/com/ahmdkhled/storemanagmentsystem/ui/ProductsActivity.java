@@ -81,7 +81,6 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
             getLoaderManager().initLoader(11, null, loaderCallbacks);
         }
 
-
         searchProducts.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -138,6 +137,7 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
                     searchBy+" LIKE?",new String[]{value},null);
         }
 
+
         // default search
         else{
             return new CursorLoader(this, ProductsContract.productsUri,null,
@@ -149,6 +149,7 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
         Log.d("loader","onLoadFinished ");
         products.clear();
         if (cursor!=null&&cursor.getCount()>0){

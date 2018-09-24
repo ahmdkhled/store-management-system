@@ -49,6 +49,7 @@ public class ProductsProvider extends ContentProvider {
             cursor= database.query(ProductsContract.PRODUCTS,columns,
                     selections,selectionArgs,null,null,sortOrder);
             cursor.setNotificationUri(getContext().getContentResolver(),uri);
+            Log.d("NTIFY"," query uri "+uri);
             return cursor;
         }
         else if(match==PRODUCT_WITH_ID){
@@ -56,6 +57,7 @@ public class ProductsProvider extends ContentProvider {
             String mSelection = ProductsContract.PRODUCT_ID+"=?";
             String[]mArgs = new String[]{id};
             cursor = database.query(ProductsContract.PRODUCTS,columns,mSelection,mArgs,null,null,sortOrder);
+            //Log.d("NTIFY"," query uri "+uri);
             cursor.setNotificationUri(getContext().getContentResolver(),uri);
             return cursor;
         }
@@ -146,24 +148,27 @@ public class ProductsProvider extends ContentProvider {
     public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String where, @Nullable String[] whereArgs) {
         SQLiteDatabase database=dbhelper.getWritableDatabase();
         int match = uriMatcher.match(uri);
-        int mId;
+        int nRows;
         switch (match){
             case PRODUCTS:
-                mId = database.update(ProductsContract.PRODUCTS,contentValues,where,whereArgs);
+                nRows = database.update(ProductsContract.PRODUCTS,contentValues,where,whereArgs);
+                Uri returnUri=ContentUris.withAppendedId(uri,Long.valueOf(whereArgs[0]));
+                Log.d("NTIFY","uri "+returnUri);
+                getContext().getContentResolver().notifyChange(uri,null);
                 break;
 
             case  CATEGORYS:
-                mId = database.update(ProductsContract.CATEGPRY_TABLE,contentValues,where,whereArgs);
+                nRows = database.update(ProductsContract.CATEGPRY_TABLE,contentValues,where,whereArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("invalid uri");
         }
 
         // if deleted record exist
-        if(mId != 0){
+        if(nRows != 0){
             getContext().getContentResolver().notifyChange(uri,null);
             Toast.makeText(getContext(), "successfully updated", Toast.LENGTH_SHORT).show();
-            return mId;
+            return nRows;
         }
         // if record not exist
         else {
