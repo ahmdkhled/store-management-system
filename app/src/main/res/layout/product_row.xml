@@ -9,6 +9,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="50dp"
         app:cardUseCompatPadding="true"
         app:cardElevation="1dp">
 
@@ -30,8 +31,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/productPrice"
-                tools:text="50$"
+                android:id="@+id/productQuantity"
+                tools:text="50"
+                android:visibility="gone"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@+id/productName"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,8 +42,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/productQuantity"
-                tools:text="100"
+                android:id="@+id/productPrice"
+                tools:text="100$"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@+id/productName"
                 app:layout_constraintEnd_toStartOf="@id/options"
