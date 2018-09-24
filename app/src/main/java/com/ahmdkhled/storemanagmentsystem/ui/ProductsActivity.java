@@ -111,7 +111,7 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
         if (bundle.containsKey("NAME")){
             String name=bundle.getString("NAME");
             return new CursorLoader(this, ProductsContract.productsUri,null,
-                    ProductsContract.NAME+" LIKE?",new String[]{name},null);
+                    ProductsContract.NAME+" like ?",new String[]{"%"+name+"%"},null);
         }else if (bundle.containsKey("ID")){
             String id=bundle.getString("ID");
             return new CursorLoader(this, ProductsContract.productsUri,null,
@@ -122,7 +122,6 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.d("CURSOR","onLoadFinished ");
         products.clear();
         if (cursor!=null&&cursor.getCount()>0){
             while (cursor.moveToNext()){
@@ -133,9 +132,8 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
                 String desc=cursor.getString(cursor.getColumnIndex(ProductsContract.DESCRIPTION));
                 String category = cursor.getString(cursor.getColumnIndex(ProductsContract.CATEGORY_NAME));
                 products.add(new Product(id,name,desc,quantity,price,category));
-                Log.d("CURSOR","quantity "+quantity);
             }
-//            cursor.close();
+            cursor.close();
         }
 
         productsAdapter.notifyDataSetChanged();
