@@ -218,7 +218,13 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
         if(item.getItemId() == R.id.search_by_category){
             searchBy = ProductsContract.CATEGORY_NAME;
             return true;
-        }else return super.onOptionsItemSelected(item);
+        }else if(item.getItemId() == R.id.search_by_name){
+            searchBy = ProductsContract.NAME;
+            return true;
+        }
+        
+
+        return super.onOptionsItemSelected(item);
     }
 
 
