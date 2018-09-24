@@ -1,6 +1,7 @@
 package com.ahmdkhled.storemanagmentsystem.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.model.Category;
+import com.ahmdkhled.storemanagmentsystem.ui.ProductsActivity;
 
 import java.util.List;
 
@@ -36,10 +38,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
-        Category category = mCategoryList.get(position);
+        final Category category = mCategoryList.get(position);
         Log.d("fromCatAdpater","quantity is "+category.getQuantity());
         holder.mCategoryTxt.setText(category.getName());
         holder.mCategoryQuantityTxt.setText(category.getQuantity()+"");
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // intent to product activity to show all products under a selected category
+                Intent intent = new Intent(mContext, ProductsActivity.class);
+                intent.putExtra("show_category_products",category.getName());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override

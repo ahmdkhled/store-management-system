@@ -1,6 +1,5 @@
 package com.ahmdkhled.storemanagmentsystem.adapters;
 
-import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import com.ahmdkhled.storemanagmentsystem.R;
 import com.ahmdkhled.storemanagmentsystem.data.ProductsContract;
 import com.ahmdkhled.storemanagmentsystem.model.Product;
-import com.ahmdkhled.storemanagmentsystem.ui.ProductDetail;
+import com.ahmdkhled.storemanagmentsystem.ui.EditProductActivity;
 
 import java.util.ArrayList;
 
@@ -78,7 +77,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
                     if (menuItem.getItemId()==R.id.delete_item){
                         deleteProduct(getAdapterPosition());
                     }else if (menuItem.getItemId()==R.id.edit_item){
-                        Intent intent=new Intent(context, ProductDetail.class);
+                        Intent intent=new Intent(context, EditProductActivity.class);
                         String id=productsList.get(getAdapterPosition()).getId();
                         intent.putExtra("detail_extra",id);
                         context.startActivity(intent);

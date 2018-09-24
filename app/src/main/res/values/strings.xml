@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">store managment system</string>
+    <string name="app_name">Stock</string>
     <string name="update_btn">update</string>
     <string name="save_btn">save</string>
     <string name="category_activity_title">Category</string>
     <string name="spinner_title">choose a category</string>
+    <string name="edit_activity_title">Edit Product</string>
 </resources>
