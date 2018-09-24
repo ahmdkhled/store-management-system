@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductHolder>
 {
 
-    Context context;
+    private Context context;
     private ArrayList<Product> productsList;
 
     public ProductsAdapter(Context context, ArrayList<Product> productsList) {
@@ -52,12 +52,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
 
 
-
-
     class ProductHolder extends RecyclerView.ViewHolder {
         TextView name,price,quantity;
         ImageView options;
-        String categoryName;
         ProductHolder(View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.productName);
@@ -68,7 +65,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
         void populateProduct(){
             name.setText(productsList.get(getAdapterPosition()).getName());
-            price.setText(String.valueOf(productsList.get(getAdapterPosition()).getPrice()));
+            price.setText(String.valueOf(productsList.get(getAdapterPosition()).getPrice())+"$");
             quantity.setText(String.valueOf(productsList.get(getAdapterPosition()).getQuantity()));
             final PopupMenu popupMenu=new PopupMenu(context,options);
             popupMenu.getMenuInflater().inflate(R.menu.popup_menu,popupMenu.getMenu());

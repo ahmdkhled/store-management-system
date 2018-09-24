@@ -85,6 +85,7 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
 
 
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Uri uri = (ProductsContract.productsUri);
@@ -134,6 +135,7 @@ public class ProductDetail extends AppCompatActivity implements LoaderManager.Lo
                     Uri uri = (ProductsContract.productsUri);
                     getContentResolver().update(uri,contentValues,ProductsContract.PRODUCT_ID+"=?",
                             new String[]{productId});
+                    finish();
                 }
             });
 

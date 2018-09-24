@@ -56,7 +56,6 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
         populateProducts(products);
         getLoaderManager().initLoader(11,null,loaderCallbacks);
 
-
         searchProducts.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -122,6 +121,7 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d("NTIFY","on load finished  ");
         products.clear();
         if (cursor!=null&&cursor.getCount()>0){
             while (cursor.moveToNext()){
