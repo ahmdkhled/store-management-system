@@ -6,8 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/black</item>
     </style>
 
     <style name="NoAction" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -17,8 +16,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">#fff</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_black_24dp</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/lightBlack</item>
     </style>
 
 </resources>
