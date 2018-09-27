@@ -67,6 +67,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
     MediaPlayer mediaPlayer;
 
     String id;
+    int categoryIndex=0;
 
     private String barcodeValue;
     private List<String> categoryList = new ArrayList<>();
@@ -218,10 +219,16 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         Log.d(TAG,"on load finished ");
+        // setup spinner
+        categoryList.clear();
+        categoryList.add("no category");
+        categoryList.add("add new category");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item
+                ,categoryList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCategorySpinner.setAdapter(dataAdapter);
+        mCategorySpinner.setSelection(0);
         if(data != null && data.getCount() > 0){
-            categoryList.clear();
-            categoryList.add("no category");
-            categoryList.add("add new category");
             data.moveToFirst();
             do{
                 Category category = new Category();
@@ -230,14 +237,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
                 categoryList.add(category.getName());
                 //Log.d(TAG,"cat name "+name);
             }while (data.moveToNext());
-
-            // setup spinner
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item
-                    ,categoryList);
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mCategorySpinner.setAdapter(dataAdapter);
-
-
+            mCategorySpinner.setSelection(categoryIndex);
 
         }
 
@@ -296,6 +296,7 @@ public class AddProductActivity extends AppCompatActivity implements LoaderManag
                         cv.put(ProductsContract.CATEGORY_NAME,mCategory);
                         cv.put(ProductsContract.CATEGORY_QUANTITY,0);
                         getContentResolver().insert(ProductsContract.categoryUri,cv);
+                        categoryIndex=categoryList.size();
 
                     }else {
                         dialog.cancel();
