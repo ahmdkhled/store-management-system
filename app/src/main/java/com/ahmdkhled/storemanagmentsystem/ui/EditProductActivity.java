@@ -6,6 +6,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
@@ -80,6 +82,7 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("waiting...");
         mProgressDialog.show();
+        mToolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 
 
 

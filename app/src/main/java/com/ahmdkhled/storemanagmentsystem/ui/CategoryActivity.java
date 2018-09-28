@@ -2,6 +2,8 @@ package com.ahmdkhled.storemanagmentsystem.ui;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -64,6 +66,8 @@ public class CategoryActivity extends AppCompatActivity implements LoaderManager
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.category_activity_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+
 
 
         // setup recycler view

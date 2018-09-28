@@ -40,7 +40,9 @@
             android:parentActivityName=".ui.MainActivity" />
 
 
-        <activity android:name=".ui.ViewOrders" />
+        <activity
+            android:name=".ui.ViewOrders"
+            android:parentActivityName=".ui.MainActivity"/>
 
 
         <activity android:name=".ui.OrderDetails" />
@@ -57,6 +59,7 @@
         </activity>
 
         <activity android:name=".ui.DashboardActivity"
+            android:theme="@style/DashboardTheme"
             android:parentActivityName=".ui.MainActivity"/>
     </application>
 

@@ -5,6 +5,9 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -66,6 +69,10 @@ public class ProductsActivity extends AppCompatActivity implements LoaderManager
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.product_activity_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        Drawable drawable=getResources().getDrawable(R.drawable.ic_more_vert_white_24dp);
+        mToolbar.setOverflowIcon(drawable);
+
 
         populateProducts(products);
 
